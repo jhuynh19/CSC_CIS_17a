@@ -17,7 +17,7 @@ int main() {
     int month, days, year;
     char choice;
 
-    cout << "See how many day are in a specific month \n\n";
+    cout << "See how many days are in a specific month \n\n";
 
     do {
         // Take user's input
@@ -54,7 +54,7 @@ int main() {
         }
         
         // Output result
-        cout << days;
+        cout << "\n" << days << " days" << endl;
 
         // Run again
         cout << "\nWant to try another month? (Y/N) \t";
