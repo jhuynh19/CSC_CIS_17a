@@ -36,7 +36,7 @@ int main() {
         cout << fixed << setprecision(2) << showpoint;
         cout << dollar << " USD equals " << yen << " Japanese Yen and " << euro << " Euro" << endl; 
 
-        // Add more fractions
+        // Convert more money
         cout << "\nWant to convert more USD? (Y/N) \t";
         cin >> choice;
 
