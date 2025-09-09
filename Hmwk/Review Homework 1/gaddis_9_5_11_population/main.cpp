@@ -15,50 +15,57 @@ using namespace std;
 int main() {
 
     // Variables
-    int month, days, year;
+    int numOrgs, days, total, i;
+    float grwthPcnt;
     char choice;
 
-    cout << "See how many days are in a specific month \n\n";
+    numOrgs = 2;
+
+    cout << "Let's grow a population! \n\n";
 
     do {
         // Take user's input
-        cout << "Enter a month (1-12)\t";
-        cin >> month;
-        cout << "Enter a year\t";
-        cin >> year;
+        do {
+            if(numOrgs < 2) { // User must provide at least 2 organisms
+                cout << "\nYou must have at least two organisms to reproduce!\n";
+            }
+            cout << "How many organisms are you starting with?\t";
+            cin >> numOrgs;
+
+        } while (numOrgs < 2);
+
+        do {
+            if(grwthPcnt < 0) { // User must provide at least 2 organisms
+                cout << "\nYou must provide a growth factor!\n";
+            }
+            cout << "\nHow fast does it multiply? (%)\t";
+            cin >> grwthPcnt;
+
+        } while (grwthPcnt < 0);
+        
+        do {
+            if(days < 0) { // User must provide at least 2 organisms
+                cout << "\nYou must give at least a day for it to reproduce!\n";
+            }
+            cout << "\nHow many days will it be allowed to grow?\t";
+            cin >> days;
+
+        } while (days < 0);
             
-        // Determine days in month
-        switch(month) {
+        // Calculations
+        i = 0;
+        total = numOrgs;
 
-            // These months have 31 days
-            case 1: case 3: case 5: case 7: case 8: case 10: case 12:
-                days = 31;
-                break;
-
-            // These months have 30 days
-            case 4: case 6: case 9: case 11:
-                days = 30;
-                break;
-
-            // February is special
-            case 2:
-                if ((year % 100 == 0 && year % 400 == 0) || (year % 100 != 0 && year % 4 == 0)) {
-                    days = 29;
-                } else {
-                    days = 28;
-                }
-                break;
-
-            default:
-                cout << "Enter a valid month" << endl;
-                return 1;
+        while(i < days) {
+            total = total * (1 + (grwthPcnt/100));
+            i++;
         }
         
         // Output result
-        cout << "\n" << days << " days" << endl;
+        cout << "\nYou'll have " << total << " organisms at the end of " << days << " days" << endl;
 
         // Run again
-        cout << "\nWant to try another month? (Y/N) \t";
+        cout << "\nWant to grow another organism? (Y/N) \t";
         cin >> choice;
 
     } while (choice == 'y' || choice == 'Y');
