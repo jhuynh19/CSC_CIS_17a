@@ -3,7 +3,6 @@
  * Author: John Huynh
  * Created on September 9th, 2025, 11:00 AM
  * Purpose:  Write a program that asks for the numerator and denominator of each fraction and displays the sum in fractional form.
-
  */
 
 //System Libraries
