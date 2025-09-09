@@ -28,6 +28,7 @@ int main() {
             
         // Determine days in month
         switch(month) {
+
             // These months have 31 days
             case 1: case 3: case 5: case 7: case 8: case 10: case 12:
                 days = 31;
@@ -45,6 +46,7 @@ int main() {
                 } else {
                     days = 28;
                 }
+                break;
 
             default:
                 cout << "Enter a valid month" << endl;
