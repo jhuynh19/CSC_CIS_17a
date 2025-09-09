@@ -31,7 +31,6 @@ int main() {
             }
             cout << "How many organisms are you starting with?\t";
             cin >> numOrgs;
-
         } while (numOrgs < 2);
 
         do {
@@ -40,7 +39,6 @@ int main() {
             }
             cout << "\nHow fast does it multiply? (%)\t";
             cin >> grwthPcnt;
-
         } while (grwthPcnt < 0);
         
         do {
@@ -49,7 +47,6 @@ int main() {
             }
             cout << "\nHow many days will it be allowed to grow?\t";
             cin >> days;
-
         } while (days < 0);
             
         // Calculations
