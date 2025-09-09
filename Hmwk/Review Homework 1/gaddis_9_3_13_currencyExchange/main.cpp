@@ -21,6 +21,7 @@ int main() {
     float dollar, yen, euro;
     char choice;
 
+    cout << "Let's convert USD to Japanese Yen and Euro \n\n";
 
     do {
         // Take user's USD input
@@ -32,6 +33,7 @@ int main() {
         euro = dollar * EUROS_PER_DOLLAR;
         
         // Output result
+        cout << fixed << setprecision(2) << showpoint;
         cout << dollar << " USD equals " << yen << " Japanese Yen and " << euro << " Euro" << endl; 
 
         // Add more fractions
