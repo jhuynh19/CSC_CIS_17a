@@ -1,35 +1,27 @@
 /* 
  * File:   gaddis_9_2_13_divSales.cpp
- * Author: Dr. Mark E. Lehr
+ * Author: John Huynh
  * Created on September 5th, 2025, 7:00 PM
  * Purpose:  Write a cout statement so the variable divSales is displayed in a field of 8 spaces, in fixed-point notation, with a precision of 2 decimal places. The decimal point should always be displayed.
  */
 
 //System Libraries
-#include <iostream>  //I/O Library
+#include <iostream> //I/O Library
+#include <iomanip>  //I/O Manipulators Library
 using namespace std;
 
-//User Libraries
 
-//Global Constants Only
-//Well known Science, Mathematical and Laboratory Constants
-
-//Function Prototypes
 
 //Execution of Code Begins Here
-int main(int argc, char** argv) {
-    //Set the random number seed here
-    
+int main() {
     //Declare all variables for this function
-    
-    //Initialize all known variables
-    
-    //Process Inputs to Outputs -> Mapping Process
-    //Maps known values to the unknown objectives
-    
-    //Display the Inputs/Outputs
+    float divSales;
 
-    //Clean up the code, close files, deallocate memory, etc....
-    //Exit stage right
+    //Initialize all known variables
+    divSales = 7428;
+
+    //Display the Inputs/Outputs
+    cout << setprecision(2) << fixed << showpoint << setw(8) << divSales;
+    
     return 0;
 }
