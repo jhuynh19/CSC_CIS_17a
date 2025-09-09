@@ -32,7 +32,7 @@ int main() {
         cout << "Denominator of second fraction \t";
         cin >> denom2;
         
-        // Calculate sum of two fractions
+        // Calculate sum of two fractions [(ad + bc) / bd]
         num_res = (num1 * denom2) + (num2 * denom1);
         denom_res = denom1 * denom2;
         result = num_res / denom_res;
