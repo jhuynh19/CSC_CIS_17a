@@ -10,8 +10,6 @@
 #include <iomanip>  //I/O Manipulators Library
 using namespace std;
 
-
-
 // Main Function
 int main() {
     float divSales;
