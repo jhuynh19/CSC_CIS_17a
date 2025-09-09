@@ -12,15 +12,12 @@ using namespace std;
 
 
 
-//Execution of Code Begins Here
+// Main Function
 int main() {
-    //Declare all variables for this function
     float divSales;
 
-    //Initialize all known variables
     divSales = 7428;
 
-    //Display the Inputs/Outputs
     cout << setprecision(2) << fixed << showpoint << setw(8) << divSales;
     
     return 0;
