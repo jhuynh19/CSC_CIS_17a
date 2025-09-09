@@ -34,7 +34,7 @@ int main() {
         cin >> denom2;
         
         // Calculate sum of two fractions
-        num_res = static_cast<int>(num1 * denom2) + (num2 * denom1);
+        num_res = (num1 * denom2) + (num2 * denom1);
         denom_res = denom1 * denom2;
         result = num_res / denom_res;
         
