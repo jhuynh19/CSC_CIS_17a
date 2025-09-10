@@ -46,7 +46,7 @@ int main() {
     // Prevent terminal from closing immediately
     cout << "\nPress Enter to exit...";
     cin.ignore();     
-    cin.get();
+    while (cin.get() != '\n') {}
     
     return 0;
 }
