@@ -54,7 +54,7 @@ void wthrRpt(int lows[], int highs[], int humid[], int days) {
         humTot += humid[i];
     }
 
-    avgHum = (humTot) / days;
+    avgHum = humTot / days;
 
     // Record highest/lowest days
     int overallMinDay, overallMaxDay;
