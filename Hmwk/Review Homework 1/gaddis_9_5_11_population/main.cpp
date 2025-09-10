@@ -35,7 +35,7 @@ int main() {
         do {
             cout << "\nHow fast does it multiply? (%)\t";
             cin >> grwthPcnt;
-            if(grwthPcnt < 0) { // User must provide at least 2 organisms
+            if(grwthPcnt < 0) { 
                 cout << "\nYou must provide a growth factor!\n";
             }
         } while (grwthPcnt < 0);
@@ -43,7 +43,7 @@ int main() {
         do {
             cout << "\nHow many days will it be allowed to grow?\t";
             cin >> days;
-            if(days < 1) { // User must provide at least 2 organisms
+            if(days < 1) {
                 cout << "\nYou must give at least a day for it to reproduce!\n";
             }
         } while (days < 1);
