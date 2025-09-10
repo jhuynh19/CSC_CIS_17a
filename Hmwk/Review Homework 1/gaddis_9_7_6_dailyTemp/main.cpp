@@ -40,8 +40,14 @@ int main() {
         cout << endl;
     }
 
+    // Pass data into weather report function
     wthrRpt(lTmp, hTmp, hmdty, daysRec);
 
+    // Prevent terminal from closing immediately
+    cout << "\nPress Enter to exit...";
+    cin.ignore();     
+    cin.get();
+    
     return 0;
 }
 
@@ -98,4 +104,6 @@ void wthrRpt(int lows[], int highs[], int humid[], int days) {
     cout << "\nMaximum temperature: " << overallMax << " (Day " << overallMaxDay << ")\n";
     cout << "Minimum temperature: " << overallMin << " (Day " << overallMinDay << ")\n";
     cout << "Temperature Variation  : " << overallVariation << " degrees\n";
+
+    
 }
