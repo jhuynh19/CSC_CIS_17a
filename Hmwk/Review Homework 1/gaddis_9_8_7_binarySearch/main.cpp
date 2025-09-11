@@ -35,7 +35,7 @@ int main()
 
     // If results contains -1 the ID was not found.
     if (results == -1)
-        cout << id << "That number does not exist in the array. \n";
+        cout << "The ID " << id << " does not exist in the array. \n";
     else
     {
         cout << id << " is found at element " << results;
