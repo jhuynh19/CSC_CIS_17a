@@ -41,7 +41,14 @@ int main()
         cout << id << " is found at element " << results;
         cout << " in the array.\n";
     }
+
+    // Prevent terminal from closing immediately
+    cout << "\nPress Enter to exit...";
+    cin.ignore();     
+    while (cin.get() != '\n') {}
+    
     return 0;
+
 }
 
 
