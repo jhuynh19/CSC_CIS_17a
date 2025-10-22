@@ -53,7 +53,7 @@ int main() {
 
     while (choice != 4) {
 
-        // Nav Menuj
+        // Nav Menu
         cout << "\n1. Enter New Speaker\n"
              << "2. Edit Speaker\n"
              << "3. Display All Speakers\n"
