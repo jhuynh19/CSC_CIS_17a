@@ -30,7 +30,7 @@ float initBalance(const string &prompt);
 string validateAccountDetails(const string &prompt);
 unsigned int getAccountNumber(const string &prompt);
 void clearInputBuffer();
-void invalidInput();
+void invalidInput(const string &prompt);
 void displayAccount(const Account &account);
 void bankAccountMenu(Account &account);
 void recordTransaction(Account &account, int action);   
@@ -73,18 +73,14 @@ int main() {
 
 // Clear Leftovers
 void clearInputBuffer() {
-
     cin.ignore(10000, '\n');
-
 }
 
 // Invalid Inputs
-void invalidInput() {
-
+void invalidInput(const string &prompt) {
     cin.clear();
     clearInputBuffer();
-    cout << "Invalid input. Please try again.\n";
-
+    cout << prompt << "\n";
 }
 
 // Validate the Account Number
@@ -98,7 +94,7 @@ unsigned int getAccountNumber(const string &prompt) {
         cin >> num;
 
         if (!cin.good()) {
-            invalidInput();
+            invalidInput("Invalid input. Please try again.");
             continue;
         } else if (num < 10000 || num > 99999) {
             cout << "Invalid entry. Account numbers are 5 digits\n";
@@ -124,7 +120,7 @@ string validateAccountDetails(const string &prompt) {
         getline(cin, input);
 
         if (!cin.good() || input.empty()) {
-            invalidInput();
+            invalidInput("Invalid input. Please try again.");
             continue;
         } else {
             valid = true;
@@ -150,7 +146,7 @@ float initBalance(const string &prompt) {
         cin >> initBalance;
 
         if (!cin.good()) {
-            invalidInput();
+            invalidInput("Invalid input. Please try again.");
             continue;
         } else {
             valid = true;
@@ -187,7 +183,7 @@ void bankAccountMenu(Account &account) {
         cin >> choice;
 
         if (!cin.good()) {
-            invalidInput();
+            invalidInput("Invalid input. Please try again.");
             continue;
         }
 
@@ -235,7 +231,7 @@ void recordTransaction(Account &account, int choice) {
         cin >> amount;
 
         if (!cin.good()) { 
-            invalidInput(); 
+            invalidInput("Invalid input. Please try again.");
             continue; 
         }
 
@@ -282,7 +278,7 @@ void recordTransaction(Account &account, int choice) {
         cin >> action;
 
         if (!cin.good()) { 
-            invalidInput(); 
+            invalidInput("Invalid input. Please try again.");
             action = 2; 
         }
 
