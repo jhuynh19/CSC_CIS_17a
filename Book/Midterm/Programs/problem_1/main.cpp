@@ -207,7 +207,7 @@ void bankAccountMenu(Account &account) {
                 cout << "\nThank you banking with us " << account.name << "!" << endl;
                 break;
             default:
-                cout << "Invalid entry. Please try again.\n";
+                invalidInput("Invalid entry. Please try again.");
                 break;
 
         }
