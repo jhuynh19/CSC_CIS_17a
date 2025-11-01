@@ -34,7 +34,7 @@ void createEmployees(Company* companies, int companyCount, Employee** &roster, i
 void deleteCompanyData(Company* companies, Employee** roster, int* employeeCount, int companyCount);
 void generateChecks(Company* companies, Employee** roster, int* employeeCount, int companyCount);
 void clearInputBuffer();
-void invalidInput();
+void invalidInput(const string &prompt);
 
 // Main Execution
 int main() {
@@ -67,12 +67,10 @@ void clearInputBuffer() {
 }
 
 // Invalid Inputs
-void invalidInput() {
-
+void invalidInput(const string &prompt) {
     cin.clear();
     clearInputBuffer();
-    cout << "Invalid input. Please try again.\n";
-
+    cout << prompt << "\n";
 }
 
 // Set up Company
@@ -81,7 +79,7 @@ Company* createCompanies(int &companyCount) {
     cout << "How many companies? ";
 
     if (!(cin >> companyCount) || companyCount <= 0) {
-        invalidInput();
+        invalidInput("Invalid input. Please try again.");
         return nullptr;
     }
 
@@ -126,7 +124,7 @@ void createEmployees(Company* companies, int companyCount, Employee** &roster, i
 
         if (!(cin >> employeeCount[i]) || employeeCount[i] < 0) {
 
-            invalidInput();
+            invalidInput("Invalid input. Please try again.");
 
             employeeCount[i] = 0;
             roster[i] = nullptr;
@@ -154,7 +152,7 @@ void createEmployees(Company* companies, int companyCount, Employee** &roster, i
             cout << "Hours Worked: ";
             if (!(cin >> roster[i][j].hours)) {
 
-                invalidInput();
+                invalidInput("Invalid input. Please try again.");
                 employeeCount[i] = j; 
                 
                 return;
@@ -163,7 +161,7 @@ void createEmployees(Company* companies, int companyCount, Employee** &roster, i
             cout << "Rate of Pay: ";
             if (!(cin >> roster[i][j].rate)) {
 
-                invalidInput();
+                invalidInput("Invalid input. Please try again.");
                 employeeCount[i] = j; 
 
                 return;
