@@ -34,7 +34,6 @@ void clearInputBuffer();
 void prtPrms(const Primes*);
 void invalidInput(const string &prompt);
 
-
 // Main Function
 int main() {
     int num;
@@ -223,7 +222,8 @@ void clearInputBuffer() {
 // Delete Data
 void cleanUp(Primes* p) { 
     if (p) { 
-        delete[] p->pStrAry; 
+        Primes &r = *p;     
+        delete[] r.pStrAry; 
         delete p; 
     } 
 }
