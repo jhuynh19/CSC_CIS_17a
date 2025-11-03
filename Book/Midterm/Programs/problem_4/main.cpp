@@ -60,7 +60,7 @@ void encryptNumber() {
     string num;
 
      // Prompt
-    cout << "\nEncrypt a four integer number. Integers must be between 0-7: ";
+    cout << "\nEncrypt a four integer number. Integers must be between 0 - 7: ";
     cin >> num;
 
     // Validate Entry
@@ -86,7 +86,7 @@ void decryptNumber() {
     string num;
 
     // Prompt
-    cout << "\nDecrypt a four integer number. Integers must be between 0-7: ";
+    cout << "\nDecrypt a four integer number. Integers must be between 0 - 7: ";
     cin >> num;
 
     // Validate Entry
