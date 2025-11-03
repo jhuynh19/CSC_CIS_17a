@@ -28,17 +28,17 @@ int main() {
 
     do {
         cout << "\nPlease choose an option below:\n";
-        cout << "1. Record Checks\n";
-        cout << "2. Record Deposits\n";
+        cout << "1. Encrypt Number\n";
+        cout << "2. Decrypt Number\n\n";
         cin >> choice;
 
         switch (choice) {
             case 1:
-                cout << "\nRecord Checks selected.\n";
+                cout << "\nEncrypt number selected.\n";
                 encryptNumber();
                 break;
             case 2:
-                cout << "\nRecord Deposits selected.\n";
+                cout << "\nDecrypt number selected.\n";
                 decryptNumber();
                 break;
             case 3:
@@ -49,7 +49,7 @@ int main() {
                 break;
         }
 
-    } while (!choice);
+    } while (choice != 3);
     
     return 0;
 }
@@ -60,7 +60,7 @@ void encryptNumber() {
     string num;
 
      // Prompt
-    cout << "Encrypt a four integer number. Integers must be between 0-7 ";
+    cout << "\nEncrypt a four integer number. Integers must be between 0-7: ";
     cin >> num;
 
     // Validate Entry
@@ -77,11 +77,6 @@ void encryptNumber() {
     swap(num[1], num[3]);
 
     // Output Encrypted Number
-    for (char &c : num) {
-        int decrypDigit = (c - '0' + 3) % 8;
-        c = char('0' + decrypDigit);
-    }
-
     outputNum(num, "Your encrypted number: ");
 
 }
@@ -91,7 +86,7 @@ void decryptNumber() {
     string num;
 
     // Prompt
-    cout << "Decrypt a four integer number. Integers must be between 0-7 ";
+    cout << "\nDecrypt a four integer number. Integers must be between 0-7: ";
     cin >> num;
 
     // Validate Entry
@@ -105,8 +100,10 @@ void decryptNumber() {
     for (char &c : num) {
         int encrypDigit = (c - '0' + 5) % 8;
         c = char('0' + encrypDigit);
-        cout << c;
     }
+
+    // Output Decrypted Number
+    outputNum(num, "Your decrypted number: ");
 }
 
 // Invalid Inputs

@@ -61,9 +61,7 @@ int main() {
 
 // Clear Leftovers
 void clearInputBuffer() {
-
     cin.ignore(10000, '\n');
-
 }
 
 // Invalid Inputs
