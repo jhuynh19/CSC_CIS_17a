@@ -63,7 +63,7 @@ void encryptNumber() {
     cout << "Encrypt a four integer number. Integers must be between 0-7 ";
     cin >> num;
 
-    // Validate entries
+    // Validate Entry
     if (!validateInput(num)) return;
 
     // Replace each digit with sum of digit plus 3 modulus 8
@@ -78,7 +78,7 @@ void encryptNumber() {
 
     // Output Encrypted Number
     for (char &c : num) {
-        int decrypDigit = (c - '0' + 5) % 8;
+        int decrypDigit = (c - '0' + 3) % 8;
         c = char('0' + decrypDigit);
     }
 
@@ -90,8 +90,8 @@ void decryptNumber() {
     
     string num;
 
-     // Prompt
-    cout << "Encrypt a four integer number. Integers must be between 0-7 ";
+    // Prompt
+    cout << "Decrypt a four integer number. Integers must be between 0-7 ";
     cin >> num;
 
     // Validate Entry
@@ -103,7 +103,7 @@ void decryptNumber() {
 
     // Decrypt the provided number
     for (char &c : num) {
-        int encrypDigit = (c - '0' + 3) % 8;
+        int encrypDigit = (c - '0' + 5) % 8;
         c = char('0' + encrypDigit);
         cout << c;
     }
