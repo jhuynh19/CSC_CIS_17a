@@ -289,7 +289,94 @@ void program_5() {
 
 // Program 6 Execution
 void program_6() {
-    cout << "NASA results\n" << endl;
+    const int cols_a_b = 5;
+    const int rows_a = 3;
+    const int rows_b = 3;
+    const int cols_c = 2;
+    const int rows_c = 3;
+
+    cout << "Data Type Conversion Result Table\n\n" << endl;
+
+    // Column headers
+    string headersAB[cols_a_b] = { "Base 10", "Base 2", "Base 8", "Base 16", "NASA" };
+    string headersC[cols_c] = { "Float", "Base 10"};
+
+    // Part A - Positive values
+    string tableA[rows_a][cols_a_b] = {
+        { "49.1875",    "110001.0011", "61.14",  "31.3",  "0xC4C00006" },
+        { "3.07421875", "11.00010011", "3.046",  "3.13",  "0xC4C00002" },
+        { "0.2",        "0.0011",      "0.1463", "0.3",   "0xCCCCCCFE" }
+    };
+
+    // Part B - Negative values
+    string tableB[rows_b][cols_a_b] = {
+        { "-49.1875",    "-110001.0011", "-61.14",  "-31.3",  "0x3B400006" },
+        { "-3.07421875", "-11.00010011", "-3.046",  "-3.13",  "0x3B400002" },
+        { "-0.2",        "-0.0011",      "-0.1463", "-0.3",   "0x333334FE" }
+    };
+
+    // Part C - Float representation to decimal
+    string tableC[rows_c][cols_c] = {
+        { "69999902", "3.29688"},
+        { "69999903", "6.59376"},
+        { "966667FF", "-0.2062449"}
+    };
+
+    // Print Part A
+    cout << "\nPart A - Positive Values\n\n";
+
+    for (int j = 0; j < cols_a_b; j++) {
+        cout << left << setw(15) << headersAB[j];
+    }
+
+    cout << endl << string(75, '-') << endl;
+
+    for (int i = 0; i < rows_a; i++) {
+
+        for (int j = 0; j < cols_a_b; j++) {
+            cout << left << setw(15) << tableA[i][j];
+        }
+
+        cout << endl;
+    }
+
+    // Print Part B
+    cout << "\nPart B - Negative Values\n\n";
+
+    for (int j = 0; j < cols_a_b; j++) {
+        cout << left << setw(15) << headersAB[j];
+    }
+
+    cout << endl << string(75, '-') << endl;
+
+    for (int i = 0; i < rows_b; i++) {
+
+        for (int j = 0; j < cols_a_b; j++) {
+            cout << left << setw(15) << tableB[i][j];
+        }    
+        cout << endl;
+
+    }
+
+    // Print Part C
+
+    cout << "\nPart C - Convert Float Representation to Decimal\n\n";
+
+    for (int j = 0; j < cols_c; j++) {
+        cout << left << setw(25) << headersC[j];
+    }
+    
+    cout << endl << string(50, '-') << endl;
+
+    for (int i = 0; i < rows_c; i++) {
+        
+        for (int j = 0; j < cols_c; j++) {
+            cout << left << setw(25) << tableC[i][j];
+        }   
+        cout << endl;
+
+    }
+
     cout << "\nPress Enter to return to program menu.\n";
     clearInputBuffer();
     cin.get(); 
