@@ -295,7 +295,7 @@ void program_6() {
     const int cols_c = 2;
     const int rows_c = 3;
 
-    cout << "Data Type Conversion Result Table\n\n" << endl;
+    cout << "Float Conversion Result Table\n\n" << endl;
 
     // Column headers
     string headersAB[cols_a_b] = { "Base 10", "Base 2", "Base 8", "Base 16", "NASA" };
