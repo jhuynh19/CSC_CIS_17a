@@ -860,7 +860,6 @@ void gameplay(unsigned int gameId, Stats &stats) {
   int cpuLeft = totalTargets;
   int pLeft = totalTargets;
     
-
   /* Display updated game boards until either player or computer lose */
   while (cpuLeft > 0 && pLeft > 0) {
 
