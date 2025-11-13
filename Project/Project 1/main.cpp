@@ -84,11 +84,13 @@ const Ship sm_fleet[3] = {
 const Ship *fleet = std_fleet;
 
 /* Identify movement direction on board */
-const int DIR_NONE = 0;
-const int DIR_UP = 1;
-const int DIR_DOWN = 2;
-const int DIR_LEFT = 3;
-const int DIR_RIGHT = 4;
+enum Direction {
+  DIR_NONE,
+  DIR_UP,
+  DIR_DOWN,
+  DIR_LEFT,
+  DIR_RIGHT
+};
 
 /* Initialize standard game mode  */
 int gameBoard = 10;
@@ -97,17 +99,17 @@ int totalTargets = 5 + 4 + 3 + 3 + 2;
 
 // ====== Prototypes ======
 
-void moveCursor(int direction, int &row, int &column);
-int targetCount(const Ship *f, int n);
+void moveCursor(Direction direction, int &row, int &column);
+int targetCount(const Ship *fleet, int shipCount);
 void mainMenu();
 void playGame();
 void gameHistory();
 void playerStats();
 void clearBoard(Board &board);
-void clearShots(Shots &s);
+void clearShots(Shots &shot);
 void printHeader();
-void printOwnBoard(const Board &board, const Shots &s);
-void printShots(const Shots &s);
+void printOwnBoard(const Board &board, const Shots &shot);
+void printShots(const Shots &shot);
 void drawPlacementView(const Board &board, const Cursor &cur, const Ship &ship);
 bool canPlace(const Board &board, int row, int column, bool vertical, unsigned char size);
 void placeShip(Board &board, int row, int column, bool vertical, unsigned char size, unsigned char id);
@@ -142,7 +144,7 @@ int main() {
 // ====== Functions ======
 
 // Move Cursor of Player
-void moveCursor(int direction, int &row, int &column) {
+void moveCursor(Direction direction, int &row, int &column) {
 
   switch (direction) {
     case DIR_UP:
@@ -177,13 +179,13 @@ bool inBounds(int row, int column) {
 }
 
 // Calculate Number of Targets
-int targetCount(const Ship *f, int n) {
+int targetCount(const Ship *fleet, int shipCount) {
 
   int targets = 0;
 
   /* Loop through ship count, add up ship sizes */
-  for (int i = 0; i < n; ++i) {
-    targets += f[i].size;
+  for (int i = 0; i < shipCount; ++i) {
+    targets += fleet[i].size;
   }
 
   return targets;
@@ -338,14 +340,14 @@ void clearBoard(Board &board) {
 }
 
 // Clear Shots
-void clearShots(Shots &s) {
+void clearShots(Shots &shot) {
 
   for (int row = 0; row < 10; ++row) {
 
     for (int column = 0; column < 10; ++column) {
 
       /* Zero the hitmarker overlay */
-      s.hitMarker[row][column] = 0;
+      shot.hitMarker[row][column] = 0;
 
     } 
 
@@ -375,7 +377,7 @@ void printHeader() {
 }
 
 // Print Player Board
-void printOwnBoard(const Board &board, const Shots &s) {
+void printOwnBoard(const Board &board, const Shots &shot) {
 
   /* Display Header */
   printHeader();
@@ -397,12 +399,12 @@ void printOwnBoard(const Board &board, const Shots &s) {
       }
 
       /* Show misses by computer */
-      if (s.hitMarker[row][column] == 1) {
+      if (shot.hitMarker[row][column] == 1) {
         ch = 'O';
       }
         
       /* Show hits by computer */
-      if (s.hitMarker[row][column] == 2) {
+      if (shot.hitMarker[row][column] == 2) {
         ch = 'X';
       }
         
@@ -417,7 +419,7 @@ void printOwnBoard(const Board &board, const Shots &s) {
 }
 
 // Print Shots
-void printShots(const Shots &s) {
+void printShots(const Shots &shot) {
 
   /* Display Header */
   printHeader();
@@ -433,12 +435,12 @@ void printShots(const Shots &s) {
       char ch = '.';
 
       /* Show misses by player */
-      if (s.hitMarker[row][column] == 1) {
+      if (shot.hitMarker[row][column] == 1) {
         ch = 'O';
       }
       
       /* Show hits by player */
-      if (s.hitMarker[row][column] == 2) {
+      if (shot.hitMarker[row][column] == 2) {
         ch = 'X';
       }
        
@@ -659,22 +661,22 @@ bool placePlayerFleet(Board &board) {
 
         /* Move cursor up */
         case 'W':
-          cur.row--;
+          moveCursor(DIR_UP, cur.row, cur.column);
           break;
 
         /* Move cursor down */
         case 'S':
-          cur.row++;
+          moveCursor(DIR_DOWN, cur.row, cur.column);
           break;
 
         /* Move cursor left */
         case 'A':
-          cur.column--;
+          moveCursor(DIR_LEFT, cur.row, cur.column);
           break;
 
         /* Move cursor right */
         case 'D':
-          cur.column++;
+          moveCursor(DIR_RIGHT, cur.row, cur.column);
           break;
 
         /* Rotate boat orientation */
@@ -821,15 +823,16 @@ void gameplay(unsigned int gameId, Stats &stats) {
 
   /* Create boards */
   Board playerBoard{}, computerBoard{};
-  
-  /* Create shot grid */
-  Shots playerShots{}, cpuShots{};
+    
+  /* Create shot grid (dynamic for rubric: new/delete) */
+  Shots *playerShots = new Shots;
+  Shots *cpuShots = new Shots;
 
   /* Clean boards and shot grids */
   clearBoard(playerBoard);
   clearBoard(computerBoard);
-  clearShots(playerShots);
-  clearShots(cpuShots);
+  clearShots(*playerShots);
+  clearShots(*cpuShots);
 
   /* Randomly set the computer's ships */
   placeComputer(computerBoard);
@@ -866,11 +869,11 @@ void gameplay(unsigned int gameId, Stats &stats) {
 
     /* Show player board with enemy hitmarkers */
     cout << "Your Board:\n";
-    printOwnBoard(playerBoard, cpuShots);
+    printOwnBoard(playerBoard, *cpuShots);
 
     /* Show computer board with player hitmarkers */
     cout << "\nEnemy Board:\n";
-    printShots(playerShots);
+    printShots(*playerShots);
 
     // Player turn
     bool shotTaken = false;
@@ -897,7 +900,7 @@ void gameplay(unsigned int gameId, Stats &stats) {
       }
 
       /* Check if player has already fired at this target */
-      if (!processShot(computerBoard, playerShots, row, col, cpuShipHits, &cpuLeft, hit, sunk, sunkId)) {
+      if (!processShot(computerBoard, *playerShots, row, col, cpuShipHits, &cpuLeft, hit, sunk, sunkId)) {
         cout << "Already shot.\n";
         continue;
       }
@@ -933,10 +936,10 @@ void gameplay(unsigned int gameId, Stats &stats) {
     int compRow, compCol, sunkId;
     
     /* Computer determines target to shoot based off past result */
-    computerPickShot(cpuShots, compRow, compCol);
+    computerPickShot(*cpuShots, compRow, compCol);
 
     /* The computer shoots... */
-    processShot(playerBoard, cpuShots, compRow, compCol, pShipHits, &pLeft, hit, sunk, sunkId);
+    processShot(playerBoard, *cpuShots, compRow, compCol, pShipHits, &pLeft, hit, sunk, sunkId);
 
     /* Output the result of the computer's shot */
     cout << "Computer fires " << (char)('A' + compCol) << compRow << " -> " << (hit ? "HIT!" : "miss.") << "\n";
@@ -969,8 +972,8 @@ void gameplay(unsigned int gameId, Stats &stats) {
   for (int row = 0; row < 10; ++row) {
       
     for (int column = 0; column < 10; ++column) {
-      rec.playerShots[row][column] = playerShots.hitMarker[row][column];
-      rec.cpuShots[row][column] = cpuShots.hitMarker[row][column];
+      rec.playerShots[row][column] = playerShots->hitMarker[row][column];
+      rec.cpuShots[row][column] = cpuShots->hitMarker[row][column];
     }
 
   }
@@ -989,6 +992,9 @@ void gameplay(unsigned int gameId, Stats &stats) {
   /* Write updated states to stat file */
   writeStats(stats, STATS_FILE);
 
+  /* Delete Pointers */
+  delete playerShots;
+  delete cpuShots;
 }
 
 // Append the game to history file
