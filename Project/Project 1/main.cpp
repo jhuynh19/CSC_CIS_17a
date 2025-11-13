@@ -1060,34 +1060,38 @@ bool writeStats(const Stats &stats, const char *path) {
 
 }
 
-// Grab Last Game ID
+// Get Last Game ID From History File 
 unsigned int lastGameId(const char *path) {
-  
-  /* Open history file */
-  ifstream in(path);
-  
-  /* Exit if file can't open */
+
+  /* Open history file in binary read mode */
+  ifstream in(path, ios::binary);
+
+  /* If file doesn't exist, there is no last game ID */
   if (!in) {
     return 0;
   }
-   
-  /* Create record to track latest game ID */
-  GameRecord rec;
 
-  /* Assign to 0 if past games don't exist */
-  unsigned int maxId = 0;
-  
-  /* Loop until we get the last game for max ID */
-  while (in.read((char*)&rec, sizeof(rec))) {
+  /* Move to end of file to determine size */
+  in.seekg(0, ios::end);
+  streamoff fileSize = in.tellg();
 
-      if (rec.gameId > maxId) {
-          maxId = rec.gameId;
-      }
-
+  /* If file doesn't have anything */
+  if (fileSize < static_cast<streamoff>(sizeof(GameRecord))) {
+    return 0;
   }
-    
-  return maxId;
 
+  /* Jump directly to the last record */
+  in.seekg(-static_cast<streamoff>(sizeof(GameRecord)), ios::end);
+
+  GameRecord rec{};
+
+  /* Read the last record */
+  if (!in.read(reinterpret_cast<char*>(&rec), sizeof(GameRecord))) {
+    return 0;
+  }
+
+  /* Return the game ID */
+  return rec.gameId;
 }
 
 // Invalid Input
