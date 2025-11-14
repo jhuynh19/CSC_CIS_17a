@@ -824,7 +824,7 @@ void gameplay(unsigned int gameId, Stats &stats) {
   /* Create boards */
   Board playerBoard{}, computerBoard{};
     
-  /* Create shot grid (dynamic for rubric: new/delete) */
+  /* Create shot grid */
   Shots *playerShots = new Shots;
   Shots *cpuShots = new Shots;
 
@@ -874,7 +874,7 @@ void gameplay(unsigned int gameId, Stats &stats) {
     cout << "\nEnemy Board:\n";
     printShots(*playerShots);
 
-    // Player turn
+    /* Player turn */
     bool shotTaken = false;
 
     do {
