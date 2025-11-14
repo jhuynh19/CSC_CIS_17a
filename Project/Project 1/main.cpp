@@ -165,19 +165,6 @@ void moveCursor(Direction direction, int &row, int &column) {
 
 }
 
-// Keep Game in Bounds
-bool inBounds(int row, int column) {
-
-  bool inBounds = false;
-
-  /* True if row and column value are inside game boundaries */
-  if(row >= 0 && row < gameBoard && column >= 0 && column < gameBoard) {
-    inBounds = true;
-  };
-
-  return inBounds;
-}
-
 // Calculate Number of Targets
 int targetCount(const Ship *fleet, int shipCount) {
 
