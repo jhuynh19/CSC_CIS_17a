@@ -1,8 +1,8 @@
 /*
  * File:   main.cpp
  * Author: John Huynh
- * Date:   November 11, 2025
- * Purpose: Recreate the game battleship using structures and arrays.
+ * Date:   December 8, 2025
+ * Purpose: Recreate the game battleship using classes
  */
 
 // ====== Libraries ======
