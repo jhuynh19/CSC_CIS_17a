@@ -32,7 +32,8 @@ class Point {
             return (row == right.row && col == right.col);                      // Checks if two points share the exact same coordinates
         }
 
-        bool operator!=(const Point& right) const {                             // Returns true if the points are different            return !(*this == right);
+        bool operator!=(const Point& right) const {                             // Returns true if the points are different            
+            return !(*this == right);
         }
 
         friend std::ostream& operator<<(std::ostream& out, const Point& p) {    // Print Point object
