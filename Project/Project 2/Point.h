@@ -10,6 +10,12 @@
 #include <iostream>  
 
 class Point {
+    protected:
+    // None needed
+    
+    private:
+    // None needed
+
     public:
         int row;
         int col;
