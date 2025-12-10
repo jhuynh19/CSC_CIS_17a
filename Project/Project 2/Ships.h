@@ -42,6 +42,7 @@ class Ship {
         }
         
 };
+
 class Carrier : public Ship {
     public:
         Carrier() : Ship("Aircraft Carrier", 5) {}
