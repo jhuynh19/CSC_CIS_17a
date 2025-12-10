@@ -1,5 +1,5 @@
 /* 
- * File:   Point.h
+ * File: Point.h
  * Author: John Huynh
  * Purpose: Coords system for the Battleship board
  */
