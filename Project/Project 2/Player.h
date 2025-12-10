@@ -29,6 +29,9 @@ class Player {
         // Accessors
         bool canPlace(Point p, bool vertical, int length) const; // canPlace() function
 
+    private:
+    // None needed
+
     public:
         Player(std::string n);                                  // Sets name
 
