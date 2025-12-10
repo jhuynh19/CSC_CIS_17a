@@ -64,19 +64,19 @@ class HumanPlayer : public Player {
 };
 
 class ComputerPlayer : public Player {
-private:
-    std::vector<Point> potentialTargets; 
-    bool huntMode;
-    Point lastHit;
+    private:
+        std::vector<Point> potentialTargets; 
+        bool huntMode;
+        Point lastHit;
 
-public:
-    ComputerPlayer();
-    virtual ~ComputerPlayer() {}
+    public:
+        ComputerPlayer();
+        virtual ~ComputerPlayer() {}
 
-    void placeShips() override;
-    Point makeMove() override;
-    
-    void addNeighbors(Point p);
+        void placeShips() override;
+        Point makeMove() override;
+        
+        void addNeighbors(Point p);
 };
 
 #endif 
