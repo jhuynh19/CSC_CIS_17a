@@ -49,6 +49,7 @@ void Player::applyShipToBoard(Point p, bool vertical, int length, int shipId) {
     }
 }
 
+// Placing ships randomly, meant for auto computer placement
 void Player::placeShipsRandomly() {
     int id = 1; 
     int size = myBoard.getSize();
@@ -71,6 +72,7 @@ void Player::placeShipsRandomly() {
     }
 }
 
+// Shot logic
 bool Player::receiveShot(Point p, bool &wasHit, bool &sunk) {
     wasHit = false; 
     sunk = false;
@@ -99,6 +101,7 @@ bool Player::receiveShot(Point p, bool &wasHit, bool &sunk) {
     return false; 
 }
 
+// Check win condition
 bool Player::hasLost() const {
     return shipsRemaining == 0;
 }
