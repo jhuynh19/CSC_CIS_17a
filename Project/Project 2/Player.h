@@ -17,41 +17,66 @@
 class Player {
     protected:
 
-        std::string name;           // Player name
-        Grid<int> myBoard;          // 0 = Empty, 1-5 = Ship IDs
-        Grid<char> enemyBoard;      // X = Hit, O = Miss
-        std::vector<Ship*> fleet;   // Dynamic list of ships
-        int shipsRemaining;         // Number of ships remaining
+        std::string name;           
+        Grid<int> myBoard;          
+        Grid<char> enemyBoard;      
+        std::vector<Ship*> fleet;   
+        int shipsRemaining;         
         
         // Mutators
-        void applyShipToBoard(Point p, bool vertical, int length, int shipId); // placeShip() function
+        void applyShipToBoard(Point p, bool vertical, int length, int shipId); 
 
-        // Accessors
-        bool canPlace(Point p, bool vertical, int length) const; // canPlace() function
+        // Getters
+        bool canPlace(Point p, bool vertical, int length) const; 
 
     private:
     // None needed
 
     public:
-        Player(std::string n);                                  // Sets name
+        Player(std::string n);                                  
 
-        virtual ~Player();                                      // Destructor
-        virtual void placeShips() = 0;                          // Player is manual, computer is random
-        virtual Point makeMove() = 0;                           // Player is manual, computer is random, then targeted
+        virtual ~Player();                                      
+        virtual void placeShips() = 0;                         
+        virtual Point makeMove() = 0;                          
 
         // Mutators
         void initFleet(int mode);
-        void placeShipsRandomly();                              // Computer random fleet placement
-        bool receiveShot(Point p, bool &wasHit, bool &sunk);    // Process shot
+        void placeShipsRandomly();                              
+        bool receiveShot(Point p, bool &wasHit, bool &sunk);    
 
         // Getters
         std::string getName() const { return name; }
-        int getBoardSize() const { return myBoard.getSize(); }  // Get board size
-        bool hasLost() const;                                   // Check for winner
+        int getBoardSize() const { return myBoard.getSize(); }  
+        bool hasLost() const;                                   
         
         // Helpers
-        void printBoards() const;                               // Print board
+        void printBoards() const;                              
 
+};
+
+class HumanPlayer : public Player {
+    public:
+        HumanPlayer(std::string n) : Player(n) {}
+        virtual ~HumanPlayer() {}
+
+        void placeShips() override;   
+        Point makeMove() override;    
+};
+
+class ComputerPlayer : public Player {
+private:
+    std::vector<Point> potentialTargets; 
+    bool huntMode;
+    Point lastHit;
+
+public:
+    ComputerPlayer();
+    virtual ~ComputerPlayer() {}
+
+    void placeShips() override;
+    Point makeMove() override;
+    
+    void addNeighbors(Point p);
 };
 
 #endif 
