@@ -7,6 +7,7 @@
 // Libraries
 #include "Player.h"
 #include <iostream>
+#include <iomanip>
 #include <ctime>
 #include <cstdlib>
 #include <limits>
@@ -164,5 +165,126 @@ void Player::printBoards() const {
             cout << " " << mark;
         }
         cout << " |\n";
+    }
+}
+
+void HumanPlayer::drawPlacementView(Point cursor, bool vertical, Ship* s) const {
+    // Clear screen
+    cout << string(50, '\n');
+    
+    cout << "Place: " << s->getName() << " (Size " << s->getLength() << ", " 
+         << (vertical ? "Vertical" : "Horizontal") << ")\n";
+    cout << "Controls: W/A/S/D move | R rotate | P place\n";
+
+    // Header
+    cout << "    ";
+    for (int col = 0; col < getBoardSize(); ++col) cout << (char)('A' + col) << " ";
+    cout << "\n    " << string(getBoardSize() * 2, '-') << "\n";
+
+    int size = getBoardSize();
+    for (int r = 0; r < size; ++r) {
+        cout << setw(2) << r << " |";
+        
+        for (int c = 0; c < size; ++c) {
+            bool isGhost = false;
+            
+            for (int k = 0; k < s->getLength(); ++k) {
+                int ghostR = cursor.row + (vertical ? k : 0);
+                int ghostC = cursor.col + (vertical ? 0 : k);
+                
+                if (r == ghostR && c == ghostC) {
+                    isGhost = true;
+                    break;
+                }
+            }
+
+            // Determine what to print
+            char sym = '.';
+            int shipId = myBoard(r, c); 
+            
+            if (isGhost) {
+                sym = 'X'; 
+            } else if (shipId > 0) {
+                sym = fleet[shipId-1]->getSymbol(); 
+            }
+            
+            cout << " " << sym;
+        }
+        cout << "\n";
+    }
+}
+
+void HumanPlayer::placeShips() {
+    Point cursor(0, 0);
+    bool vertical = false;
+    int shipId = 1;
+
+    // Classic Loop
+    for (int i = 0; i < fleet.size(); i++) {
+        Ship &s = *fleet[i]; 
+        bool placed = false;
+        
+        while (!placed) {
+
+            drawPlacementView(cursor, vertical, &s);
+            cout << "Command: ";
+
+            char cmd;
+            cin >> cmd;
+            cmd = toupper(cmd);
+
+            int size = myBoard.getSize();
+
+            switch (cmd) {
+                case 'W': if (cursor.row > 0) cursor.row--; break;
+                case 'S': if (cursor.row < size - 1) cursor.row++; break;
+                case 'A': if (cursor.col > 0) cursor.col--; break;
+                case 'D': if (cursor.col < size - 1) cursor.col++; break;
+                case 'R': vertical = !vertical; break;
+                case 'P': 
+                    if (canPlace(cursor, vertical, s.getLength())) {
+                        applyShipToBoard(cursor, vertical, s.getLength(), shipId);
+                        placed = true;
+                        shipId++;
+                    } else {
+                        cout << "Invalid Position!\n";
+                        cin.ignore(); cin.get(); 
+                    }
+                    break;
+            }
+        }
+    }
+}
+
+Point HumanPlayer::makeMove() {
+    string input;
+    int r, c;
+    
+    while (true) {
+        cout << getName() << ", enter target (e.g. A5): ";
+        cin >> input;
+        
+        if (sscanf(input.c_str(), "%c%d", &colChar, &rowNum) == 2) {
+            
+            colChar = toupper(colChar);
+
+            // Check if column letter is valid
+            if (colChar >= 'A' && colChar < 'A' + getBoardSize()) {
+                c = colChar - 'A';
+                r = rowNum;
+
+                // Check if row number is valid 
+                if (r >= 0 && r < getBoardSize()) {
+                    
+                    // Check if we already shot there
+                    if (enemyBoard(r, c) == 0) { 
+                        return Point(r, c);
+                    } else {
+                        cout << "Already shot there.\n";
+                    }
+                }
+            }
+        }
+        cout << "Invalid coordinate. Try again.\n";
     }
 }
