@@ -219,7 +219,6 @@ void HumanPlayer::placeShips() {
     bool vertical = false;
     int shipId = 1;
 
-    // Classic Loop
     for (int i = 0; i < fleet.size(); i++) {
         Ship &s = *fleet[i]; 
         bool placed = false;
