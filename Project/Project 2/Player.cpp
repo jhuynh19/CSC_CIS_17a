@@ -287,3 +287,41 @@ Point HumanPlayer::makeMove() {
         cout << "Invalid coordinate. Try again.\n";
     }
 }
+
+ComputerPlayer::ComputerPlayer() : Player("Computer") {
+    huntMode = true;
+}
+
+void ComputerPlayer::placeShips() {
+    placeShipsRandomly();
+}
+
+void ComputerPlayer::addNeighbors(Point p) {
+    potentialTargets.push_back(Point(p.row - 1, p.col));
+    potentialTargets.push_back(Point(p.row + 1, p.col));
+    potentialTargets.push_back(Point(p.row, p.col - 1));
+    potentialTargets.push_back(Point(p.row, p.col + 1));
+}
+
+Point ComputerPlayer::makeMove() {
+    Point target;
+    bool valid = false;
+    int size = getBoardSize();
+
+    while (!valid) {
+        if (potentialTargets.empty()) huntMode = true;
+
+        if (huntMode) {
+            target.row = rand() % size;
+            target.col = rand() % size;
+        } else {
+            target = potentialTargets.back();
+            potentialTargets.pop_back();
+        }
+
+        if (target.row >= 0 && target.row < size && target.col >= 0 && target.col < size) {
+            if (enemyBoard(target.row, target.col) == 0) valid = true;
+        }
+    }
+    return target;
+}
