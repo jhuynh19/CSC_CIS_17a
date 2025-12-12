@@ -55,12 +55,9 @@ void Game::setup() {
 }
 
 void Game::play() {
-    // === THE REFERENCE TRICK ===
-    // This allows us to use dots (.) instead of arrows (->) everywhere
     Player &p = *player;
     Player &c = *computer;
 
-    // 1. Place Ships
     p.placeShips();
     c.placeShips(); 
 
