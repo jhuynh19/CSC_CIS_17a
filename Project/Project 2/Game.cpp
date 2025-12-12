@@ -47,7 +47,7 @@ void Game::setup() {
     player = new HumanPlayer("Player");
     computer = new ComputerPlayer(); 
 
-    // 3. Initialize Fleets
+    // Initialize Fleets
     Player &p = *player;
     Player &c = *computer;
     p.initFleet(choice);
