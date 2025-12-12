@@ -8,6 +8,7 @@
 #define GAME_H
 
 #include "Player.h"
+#include <fstream>
 
 class Game {
     protected:
@@ -19,6 +20,14 @@ class Game {
 
         static int gamesPlayed;
 
+        struct Stats {
+            unsigned int totalGames;
+            unsigned int userWins;
+        };
+
+        void loadStats();
+        void saveStats();
+
     public:
         Game();
         ~Game();
@@ -26,6 +35,8 @@ class Game {
         void setup();
 
         void play();
+
+        void displayStats() const;
         
         static int getGamesPlayed() { return gamesPlayed; }
 };
