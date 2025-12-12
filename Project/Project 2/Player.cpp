@@ -11,6 +11,7 @@
 #include <ctime>
 #include <cstdlib>
 #include <limits>
+#include <string>
 
 using namespace std;
 
@@ -257,7 +258,9 @@ void HumanPlayer::placeShips() {
 
 Point HumanPlayer::makeMove() {
     string input;
-    int r, c;
+    int r, c, rowNum;
+    char colChar;
+    
     
     while (true) {
         cout << getName() << ", enter target (e.g. A5): ";
