@@ -6,6 +6,7 @@
 
 #include "Game.h"
 #include <iostream>
+#include <iomanip>
 #include <string>
 
 using namespace std;
@@ -16,6 +17,8 @@ int Game::gamesPlayed = 0;
 Game::Game() {
     player = NULL;
     computer = NULL;
+
+    loadStats();
 }
 
 // Clean up memory when game ends
@@ -67,6 +70,7 @@ void Game::play() {
     bool gameOver = false;
     bool hit = false;
     bool sunk = false;
+    bool playerWon = false;
     
     while (!gameOver) {
         // Player Turn
@@ -95,6 +99,7 @@ void Game::play() {
         if (c.hasLost()) {
             cout << "\nYou win!\n";
             gameOver = true;
+            playerWon = true;
             break; 
         }
 
@@ -122,6 +127,7 @@ void Game::play() {
         if (p.hasLost()) {
             cout << "\nYou Lose!\n";
             gameOver = true;
+            playerWon = false;
         }
         
         // Pause between turns
@@ -132,5 +138,46 @@ void Game::play() {
     }
 
     // Update Stats
+    currentStats.totalGames++;
+
+    if (playerWon) {
+        currentStats.userWins++;
+    }
+
+    saveStats();
+
     gamesPlayed++;
+}
+
+void Game::loadStats() {
+    std::ifstream in("stats.dat", std::ios::binary);
+    
+    // If file exists
+    if (in) {
+        in.read(reinterpret_cast<char*>(&currentStats), sizeof(Stats));
+    } else {
+        currentStats.totalGames = 0;
+        currentStats.userWins = 0;
+    }
+}
+
+void Game::saveStats() {
+    std::ofstream out("stats.dat", std::ios::binary);
+    if (out) {
+        out.write(reinterpret_cast<const char*>(&currentStats), sizeof(Stats));
+    }
+}
+
+void Game::displayStats() const {
+    cout << "\nPlayer Statistics\n";
+    cout << left << setw(12) << "Total Games:" << currentStats.totalGames << "\n";
+    cout << left << setw(12) << "User Wins:" << currentStats.userWins << "\n";
+    
+    if (currentStats.totalGames > 0) {
+        // Calculate percentage
+        int pct = (currentStats.userWins * 100) / currentStats.totalGames;
+        cout << left << setw(10) << "Win Rate:" << pct << "%\n";
+    } else {
+        cout << left << setw(10) << "Win Rate:" << "0%\n";
+    }
 }

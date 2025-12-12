@@ -25,6 +25,8 @@ class Game {
             unsigned int userWins;
         };
 
+        Stats currentStats;
+
         void loadStats();
         void saveStats();
 
