@@ -79,7 +79,7 @@ class ComputerPlayer : public Player {
         void placeShips() override;
         Point makeMove() override;
         
-        void addNeighbors(Point p);
+        void addAdjacentTargets(Point p);
 };
 
 #endif 
