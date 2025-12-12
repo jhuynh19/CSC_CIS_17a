@@ -53,3 +53,87 @@ void Game::setup() {
     p.initFleet(choice);
     c.initFleet(choice);
 }
+
+void Game::play() {
+    // === THE REFERENCE TRICK ===
+    // This allows us to use dots (.) instead of arrows (->) everywhere
+    Player &p = *player;
+    Player &c = *computer;
+
+    // 1. Place Ships
+    p.placeShips();
+    c.placeShips(); 
+
+    cout << "\nAll ships placed! Battle commencing...\n";
+    
+    // Main Game Loop
+    bool gameOver = false;
+    bool hit = false;
+    bool sunk = false;
+    
+    while (!gameOver) {
+        // Player Turn
+
+        cout << string(2, '\n'); 
+        p.printBoards();       
+
+        // Get Valid Move from Player
+        Point target = p.makeMove();
+        
+        // Fire at Computer
+        if (c.receiveShot(target, hit, sunk)) {
+            cout << "HIT!";
+            if (sunk) cout << " You sunk a ship!";
+        } else {
+            cout << "Miss.";
+        }
+        cout << "\n";
+        
+        if (sunk) {
+             cout << "Press Enter...";
+             cin.ignore(); cin.get();
+        }
+
+        // Check Win
+        if (c.hasLost()) {
+            cout << "\nYou win!\n";
+            gameOver = true;
+            break; 
+        }
+
+        // Computer's Turn
+        
+        Point cpuTarget = c.makeMove();
+        
+        // Fire at Player
+        if (p.receiveShot(cpuTarget, hit, sunk)) {
+            cout << "Computer fires " << cpuTarget << " -> HIT!\n";
+            if (sunk) cout << "Your ship was sunk!\n";
+            
+            ComputerPlayer* cpuPtr = dynamic_cast<ComputerPlayer*>(computer);
+            
+            if (cpuPtr) {
+                ComputerPlayer &cpu = *cpuPtr;
+                cpu.addAdjacentTargets(cpuTarget);
+            }
+            
+        } else {
+            cout << "Computer fires " << cpuTarget << " -> Miss.\n";
+        }
+        
+        // Check Loss
+        if (p.hasLost()) {
+            cout << "\nYou Lose!\n";
+            gameOver = true;
+        }
+        
+        // Pause between turns
+        if (!gameOver) {
+            cout << "Press Enter for next turn...";
+            cin.ignore(); cin.get();
+        }
+    }
+
+    // Update Stats
+    gamesPlayed++;
+}
