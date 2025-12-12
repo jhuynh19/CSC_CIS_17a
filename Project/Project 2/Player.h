@@ -55,6 +55,9 @@ class Player {
 };
 
 class HumanPlayer : public Player {
+    private:
+        void drawPlacementView(Point cursor, bool vertical, int length) const;
+
     public:
         HumanPlayer(std::string n) : Player(n) {}
         virtual ~HumanPlayer() {}

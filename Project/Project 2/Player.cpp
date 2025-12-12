@@ -296,7 +296,7 @@ void ComputerPlayer::placeShips() {
     placeShipsRandomly();
 }
 
-void ComputerPlayer::addNeighbors(Point p) {
+void ComputerPlayer::addAdjacentTargets(Point p) {
     potentialTargets.push_back(Point(p.row - 1, p.col));
     potentialTargets.push_back(Point(p.row + 1, p.col));
     potentialTargets.push_back(Point(p.row, p.col - 1));
