@@ -76,9 +76,10 @@ void Player::placeShipsRandomly() {
 }
 
 // Shot logic
-bool Player::receiveShot(Point p, bool &wasHit, bool &sunk) {
+bool Player::receiveShot(Point p, bool &wasHit, bool &sunk, string &sunkName) {
     wasHit = false; 
     sunk = false;
+    sunkName = "";
 
     // Check bounds
     if (p.row < 0 || p.row >= myBoard.getSize() || p.col < 0 || p.col >= myBoard.getSize()) {
@@ -98,13 +99,15 @@ bool Player::receiveShot(Point p, bool &wasHit, bool &sunk) {
 
         if (s.isSunk()) {
             sunk = true;
+            sunkName = s.getName();
             shipsRemaining--;
         }
         return true;
     }
-    return false;
     
     incomingShots(p.row, p.col) = 'O'; 
+    
+    return false;
 }
 
 // Check win condition
@@ -282,14 +285,14 @@ bool HumanPlayer::placeShips() {
     return true;
 }
 
-Point HumanPlayer::makeMove() {
+Point HumanPlayer::makeMove(int enemyShips) {
     string input;
     int r, c, rowNum;
     char colChar;
     
     
     while (true) {
-        cout << getName() << ", enter target: ";
+        cout << "Admiral, " << enemyShips << " ships are left. Choose your target (e.g. A5) or Q to quit: ";
         cin >> input;
 
         if (toupper(input[0]) == 'Q') {
@@ -338,7 +341,7 @@ void ComputerPlayer::addAdjacentTargets(Point p) {
     potentialTargets.push_back(Point(p.row, p.col + 1));
 }
 
-Point ComputerPlayer::makeMove() {
+Point ComputerPlayer::makeMove(int enemyShips) {
     Point target;
     bool valid = false;
     int size = getBoardSize();
@@ -347,13 +350,16 @@ Point ComputerPlayer::makeMove() {
         if (potentialTargets.empty()) huntMode = true;
 
         if (huntMode) {
+            // Fire randomly at the board
             target.row = rand() % size;
             target.col = rand() % size;
         } else {
+            // Fire at adjacent spots found
             target = potentialTargets.back();
             potentialTargets.pop_back();
         }
 
+        // Validate target
         if (target.row >= 0 && target.row < size && target.col >= 0 && target.col < size) {
             if (enemyBoard(target.row, target.col) == 0) valid = true;
         }

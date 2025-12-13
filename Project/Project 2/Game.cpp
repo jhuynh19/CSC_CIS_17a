@@ -119,7 +119,8 @@ void Game::play() {
     bool hit = false;
     bool sunk = false;
     bool playerWon = false;
-    
+    string sunkName = "";
+
     while (!gameOver) {
         // Player Turn
 
@@ -127,7 +128,7 @@ void Game::play() {
         p.printBoards();       
 
         // Get Valid Move from Player
-        Point target = p.makeMove();
+        Point target = p.makeMove(c.getShipsRemaining());
 
         // Handle game quit
         if (target.isQuit()) {
@@ -138,7 +139,7 @@ void Game::play() {
         }
         
         // Fire at Computer
-        if (c.receiveShot(target, hit, sunk)) {
+        if (c.receiveShot(target, hit, sunk, sunkName)) {
             cout << "HIT!";
             if (sunk) cout << " You sunk a ship!";
             p.markShot(target, true);
@@ -158,10 +159,10 @@ void Game::play() {
 
         // Computer's Turn
         
-        Point cpuTarget = c.makeMove();
+        Point cpuTarget = c.makeMove(p.getShipsRemaining());
         
         // Fire at Player
-        if (p.receiveShot(cpuTarget, hit, sunk)) {
+        if (p.receiveShot(cpuTarget, hit, sunk, sunkName)) {
             cout << "Computer fires " << cpuTarget << " -> HIT!\n";
             if (sunk) cout << "Your ship was sunk!\n";
             c.markShot(cpuTarget, true);

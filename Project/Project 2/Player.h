@@ -39,16 +39,17 @@ class Player {
 
         virtual ~Player();                                      
         virtual bool placeShips() = 0;                         
-        virtual Point makeMove() = 0;                          
+        virtual Point makeMove(int enemyShips) = 0;
 
         // Mutators
         void initFleet(int mode);
         void placeShipsRandomly();                              
-        bool receiveShot(Point p, bool &wasHit, bool &sunk);    
+        bool receiveShot(Point p, bool &wasHit, bool &sunk, std::string &sunkName); 
 
         // Getters
         std::string getName() const { return name; }
         int getBoardSize() const { return myBoard.getSize(); }  
+        int getShipsRemaining() const { return shipsRemaining; }
         bool hasLost() const;                                   
         
         // Helpers
@@ -74,7 +75,7 @@ class HumanPlayer : public Player {
         virtual ~HumanPlayer() {}
 
         bool placeShips() override;
-        Point makeMove() override;    
+        Point makeMove(int enemyShips) override;    
 };
 
 class ComputerPlayer : public Player {
@@ -88,7 +89,7 @@ class ComputerPlayer : public Player {
         virtual ~ComputerPlayer() {}
 
         bool placeShips() override;
-        Point makeMove() override;
+        Point makeMove(int enemyShips) override;
         
         void addAdjacentTargets(Point p);
 };
