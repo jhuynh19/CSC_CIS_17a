@@ -141,7 +141,7 @@ void Game::play() {
         // Fire at Computer
         if (c.receiveShot(target, hit, sunk, sunkName)) {
             cout << "HIT!";
-            if (sunk) cout << " You sunk a ship!";
+            if (sunk) cout << " You sunk a ship! (" << sunkName << ")";
             p.markShot(target, true);
         } else {
             cout << "Miss.";

@@ -292,7 +292,7 @@ Point HumanPlayer::makeMove(int enemyShips) {
     
     
     while (true) {
-        cout << "Admiral, " << enemyShips << " ships are left. Choose your target (e.g. A5) or Q to quit: ";
+        cout << "Admiral, " << enemyShips << " ships are left. Choose your target (e.g. B3) or Q to quit: ";
         cin >> input;
 
         if (toupper(input[0]) == 'Q') {
