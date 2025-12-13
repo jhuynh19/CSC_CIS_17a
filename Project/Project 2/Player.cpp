@@ -264,7 +264,7 @@ bool HumanPlayer::placeShips() {
                 case 'D': if (cursor.col < size - 1) cursor.col++; break;
                 case 'R': vertical = !vertical; break;
                 case 'Q': 
-                    return false;
+                    return true;
                 case 'P': 
                     if (canPlace(cursor, vertical, s.getLength())) {
                         applyShipToBoard(cursor, vertical, s.getLength(), shipId);
