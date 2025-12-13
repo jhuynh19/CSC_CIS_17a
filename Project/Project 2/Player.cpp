@@ -146,7 +146,7 @@ void Player::printBoards() const {
 
     // Header
     cout << string(3, ' ') << "Your Board" << string(size * 2 - 8, ' ') << string(3, ' ') << "Enemy Board\n";
-    cout << string(4, ' ');
+    cout << string(3, ' ');
     for (int c = 0; c < size; ++c) cout << (char)('A' + c) << " ";
     cout << string(6, ' ');
     for (int c = 0; c < size; ++c) cout << (char)('A' + c) << " ";
@@ -201,8 +201,8 @@ void HumanPlayer::drawPlacementView(Point cursor, bool vertical, Ship* s) const 
 
     // Header
     cout << string(3, ' ');
-    for (int c = 0; c < size; ++c) cout << (char)('A' + c) << string(2, ' ');
-    cout << string(2, ' ') << string(size * 2, '-') << "\n";
+    for (int c = 0; c < size; ++c) cout << (char)('A' + c) << " ";
+    cout << "\n" << string(2, ' ') << string(size * 2, '-') << "\n";
 
     for (int r = 0; r < size; ++r) {
         cout << setw(2) << r << "|"; 
