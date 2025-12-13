@@ -143,9 +143,11 @@ void Game::play() {
             cout << "HIT!";
             if (sunk) cout << " You sunk a ship! (" << sunkName << ")";
             p.markShot(target, true);
+            currentStats.shotsHit++;
         } else {
             cout << "Miss.";
             p.markShot(target, false);
+            currentStats.shotsMissed++;
         }
         cout << "\n";
 
@@ -154,6 +156,7 @@ void Game::play() {
             cout << "\nYou win!\n";
             gameOver = true;
             playerWon = true;
+            cin.get();
             break; 
         }
 
@@ -234,10 +237,25 @@ void Game::displayStats() const {
     if (currentStats.totalGames > 0) {
         // Calculate percentage
         int pct = (currentStats.userWins * 100) / currentStats.totalGames;
+
         cout << left << setw(20) << "Win Rate:" << pct << "%\n";
+        cout << left << setw(20) << "Shots Hit:" << currentStats.shotsHit << "\n";
+        cout << left << setw(20) << "Shots Missed:" << currentStats.shotsMissed << "\n";
+
+        int totalShots = currentStats.shotsHit + currentStats.shotsMissed;
+
+        if (totalShots > 0) {
+            // Calculate percentage
+            int acc = (currentStats.shotsHit * 100) / totalShots;
+            cout << left << setw(20) << "Accuracy:" << acc << "%\n";
+        } else {
+            cout << left << setw(20) << "Accuracy:" << "0%\n";
+        }
+
     } else {
         cout << left << setw(20) << "Win Rate:" << "0%\n";
-    }
+    }        
+
 }
 
 void Game::saveGameRecord(bool playerWon) {

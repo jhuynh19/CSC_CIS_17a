@@ -23,6 +23,8 @@ class Game {
         struct Stats {
             unsigned int totalGames;
             unsigned int userWins;
+            unsigned int shotsHit;
+            unsigned int shotsMissed;
         };
 
         Stats currentStats;
