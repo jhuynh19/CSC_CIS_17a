@@ -281,18 +281,19 @@ void Game::displayHistory() const {
 
     GameRecord rec;
     cout << "\nGame History\n";
-    cout << "ID\tResult\n";
-    cout << "--\t------\n";
 
     while (in.read(reinterpret_cast<char*>(&rec), sizeof(GameRecord))) {
         cout << "\n" << string(43, '=') << "\n";
         cout << " Game #" << rec.gameId << " | Result: " 
              << (rec.playerWon ? "PLAYER WON" : "COMPUTER WON") << "\n";
-        cout << string(43, '=') << "\n";
+        cout << string(43, '=') << "\n\n";
 
-        cout << "   Enemy Board            Your Board\n";
-        cout << "   -----------            ----------\n";
+        int boardWidth = 3 + (rec.boardSize * 2);
         
+        // Print Headers aligned to board width
+        cout << string(3, ' ') << "Enemy Board" << string(boardWidth - 11, ' ') << string(3, ' ') << "Your Board\n";
+        cout << string(3, ' ') << string(rec.boardSize * 2, '-') << string(6, ' ') << string(rec.boardSize * 2, '-') << "\n";
+
         for (int r = 0; r < rec.boardSize; ++r) {
             
             // Enemy Board
