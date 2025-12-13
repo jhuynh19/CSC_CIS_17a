@@ -20,13 +20,12 @@ class Player {
         std::string name;           
         Grid<int> myBoard;          
         Grid<char> enemyBoard;      
+        Grid<char> incomingShots;
         std::vector<Ship*> fleet;   
         int shipsRemaining;         
         
         // Mutators
         void applyShipToBoard(Point p, bool vertical, int length, int shipId); 
-
-        // Getters
         bool canPlace(Point p, bool vertical, int length) const; 
 
     private:
@@ -55,6 +54,7 @@ class Player {
         void setBoardSize(int s) {
             myBoard.resize(s);
             enemyBoard.resize(s);
+            incomingShots.resize(s);
         }
 
         void markShot(Point p, bool hit) {

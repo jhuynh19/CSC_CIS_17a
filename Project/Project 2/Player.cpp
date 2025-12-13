@@ -90,6 +90,7 @@ bool Player::receiveShot(Point p, bool &wasHit, bool &sunk) {
     if (shipId > 0) {
         wasHit = true;
         
+        incomingShots(p.row, p.col) = 'X';
         Ship &s = *fleet[shipId - 1];
         
         s.takeHit();
@@ -100,7 +101,9 @@ bool Player::receiveShot(Point p, bool &wasHit, bool &sunk) {
         }
         return true;
     }
-    return false; 
+    return false;
+    
+    incomingShots(p.row, p.col) = 'O'; 
 }
 
 // Check win condition
@@ -263,7 +266,7 @@ Point HumanPlayer::makeMove() {
     
     
     while (true) {
-        cout << getName() << ", enter target (e.g. A5): ";
+        cout << getName() << ", enter target: ";
         cin >> input;
         
         if (sscanf(input.c_str(), "%c%d", &colChar, &rowNum) == 2) {
