@@ -146,12 +146,12 @@ void Player::printBoards() const {
 
     // Header
     cout << string(3, ' ') << "Your Board" << string(size * 2 - 8, ' ') << string(3, ' ') << "Enemy Board\n";
-    cout << string(3, ' ');
+    cout << string(4, ' ');
     for (int c = 0; c < size; ++c) cout << (char)('A' + c) << " ";
     cout << string(6, ' ');
     for (int c = 0; c < size; ++c) cout << (char)('A' + c) << " ";
     cout << "\n";
-    cout << string(3, ' ') << string(size * 2, '-') << string(6, ' ') << string(size * 2, '-') << "\n";
+    cout << string(2, ' ') << string(size * 2, '-') << string(6, ' ') << string(size * 2, '-') << "\n";
     
     
     for (int r = 0; r < size; ++r) {
@@ -237,7 +237,7 @@ void HumanPlayer::drawPlacementView(Point cursor, bool vertical, Ship* s) const 
     }
 }
 
-void HumanPlayer::placeShips() {
+bool HumanPlayer::placeShips() {
     Point cursor(0, 0);
     bool vertical = false;
     int shipId = 1;
@@ -263,6 +263,8 @@ void HumanPlayer::placeShips() {
                 case 'A': if (cursor.col > 0) cursor.col--; break;
                 case 'D': if (cursor.col < size - 1) cursor.col++; break;
                 case 'R': vertical = !vertical; break;
+                case 'Q': 
+                    return false;
                 case 'P': 
                     if (canPlace(cursor, vertical, s.getLength())) {
                         applyShipToBoard(cursor, vertical, s.getLength(), shipId);
@@ -273,6 +275,7 @@ void HumanPlayer::placeShips() {
                         cin.ignore(); cin.get(); 
                     }
                     break;
+                
             }
         }
     }
@@ -287,6 +290,10 @@ Point HumanPlayer::makeMove() {
     while (true) {
         cout << getName() << ", enter target: ";
         cin >> input;
+
+        if (toupper(input[0]) == 'Q') {
+            return Point::Quit();
+        }
         
         if (sscanf(input.c_str(), "%c%d", &colChar, &rowNum) == 2) {
             
@@ -318,8 +325,9 @@ ComputerPlayer::ComputerPlayer() : Player("Computer") {
     huntMode = true;
 }
 
-void ComputerPlayer::placeShips() {
+bool ComputerPlayer::placeShips() {
     placeShipsRandomly();
+    return true;
 }
 
 void ComputerPlayer::addAdjacentTargets(Point p) {

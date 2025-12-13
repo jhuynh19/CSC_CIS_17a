@@ -30,6 +30,9 @@ class Game {
         struct GameRecord {
             unsigned int gameId;
             bool playerWon;
+
+            char playerShots[10][10];
+            char cpuShots[10][10];
         };
 
         void loadStats();
