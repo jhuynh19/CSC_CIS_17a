@@ -52,6 +52,14 @@ class Player {
         // Helpers
         void printBoards() const;                              
 
+        void setBoardSize(int s) {
+            myBoard.resize(s);
+            enemyBoard.resize(s);
+        }
+
+        void markShot(Point p, bool hit) {
+            enemyBoard(p.row, p.col) = (hit ? 'X' : 'O');
+        }
 };
 
 class HumanPlayer : public Player {

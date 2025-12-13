@@ -53,6 +53,12 @@ void Game::setup() {
     // Initialize Fleets
     Player &p = *player;
     Player &c = *computer;
+
+    if (choice == 2) {
+        p.setBoardSize(5);
+        c.setBoardSize(5);
+    }
+
     p.initFleet(choice);
     c.initFleet(choice);
 }
@@ -75,7 +81,7 @@ void Game::play() {
     while (!gameOver) {
         // Player Turn
 
-        cout << string(2, '\n'); 
+        cout << string(50, '\n'); 
         p.printBoards();       
 
         // Get Valid Move from Player
@@ -85,8 +91,10 @@ void Game::play() {
         if (c.receiveShot(target, hit, sunk)) {
             cout << "HIT!";
             if (sunk) cout << " You sunk a ship!";
+            p.markShot(target, true);
         } else {
             cout << "Miss.";
+            p.markShot(target, false);
         }
         cout << "\n";
         
@@ -111,7 +119,8 @@ void Game::play() {
         if (p.receiveShot(cpuTarget, hit, sunk)) {
             cout << "Computer fires " << cpuTarget << " -> HIT!\n";
             if (sunk) cout << "Your ship was sunk!\n";
-            
+            c.markShot(cpuTarget, true);
+
             ComputerPlayer* cpuPtr = dynamic_cast<ComputerPlayer*>(computer);
             
             if (cpuPtr) {
@@ -121,6 +130,7 @@ void Game::play() {
             
         } else {
             cout << "Computer fires " << cpuTarget << " -> Miss.\n";
+            c.markShot(cpuTarget, false);
         }
         
         // Check Loss
@@ -133,7 +143,8 @@ void Game::play() {
         // Pause between turns
         if (!gameOver) {
             cout << "Press Enter for next turn...";
-            cin.ignore(); cin.get();
+            cin.ignore(); 
+            cin.get();
         }
     }
 

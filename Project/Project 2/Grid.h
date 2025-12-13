@@ -75,6 +75,26 @@ class Grid {
         // Getter
         int getSize() const { return size; }
 
+        // Specify game board size
+        void resize(int newSize) {
+            if (size == newSize) return; 
+
+            // Delete old memory
+            if (data) {
+                for (int i = 0; i < size; i++) {
+                    delete[] data[i];
+                }
+                delete[] data;
+            }
+
+            // Allocate new memory
+            size = newSize;
+            data = new T*[size];
+            for (int i = 0; i < size; i++) {
+                data[i] = new T[size]{}; 
+            }
+        }
+
 };
 
 #endif
