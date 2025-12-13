@@ -279,6 +279,8 @@ bool HumanPlayer::placeShips() {
             }
         }
     }
+
+    return true;
 }
 
 Point HumanPlayer::makeMove() {
