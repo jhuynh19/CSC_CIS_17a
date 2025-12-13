@@ -109,7 +109,7 @@ void Game::play() {
         cout << "\nGame setup cancelled. Returning to menu.\n";
         return;
     }
-    
+
     c.placeShips(); 
 
     cout << "\nAll ships placed! Battle commencing...\n";
@@ -243,7 +243,8 @@ void Game::saveGameRecord(bool playerWon) {
     GameRecord rec;
     rec.gameId = currentStats.totalGames;
     rec.playerWon = playerWon;
-
+    rec.boardSize = player->getBoardSize(); 
+    
     for(int r=0; r<10; r++) {
         for(int c=0; c<10; c++) { 
             rec.playerShots[r][c] = '.'; 
@@ -284,27 +285,27 @@ void Game::displayHistory() const {
     cout << "--\t------\n";
 
     while (in.read(reinterpret_cast<char*>(&rec), sizeof(GameRecord))) {
-        cout << "\n========================================\n";
+        cout << "\n" << string(43, '=') << "\n";
         cout << " Game #" << rec.gameId << " | Result: " 
              << (rec.playerWon ? "PLAYER WON" : "COMPUTER WON") << "\n";
-        cout << "========================================\n";
+        cout << string(43, '=') << "\n";
 
         cout << "   Enemy Board            Your Board\n";
         cout << "   -----------            ----------\n";
         
-        for (int r = 0; r < 10; ++r) {
+        for (int r = 0; r < rec.boardSize; ++r) {
             
-            cout << r << " |";
-            for (int c = 0; c < 10; ++c) {
-                char mark = rec.playerShots[r][c];
-                cout << " " << (mark == 0 ? '.' : mark);
+            // Enemy Board
+            cout << setw(2) << r << " |";
+            for (int c = 0; c < rec.boardSize; ++c) {
+                cout << " " << rec.playerShots[r][c];
             }
             cout << " |   ";
 
-            cout << r << " |";
-            for (int c = 0; c < 10; ++c) {
-                char mark = rec.cpuShots[r][c];
-                cout << " " << (mark == 0 ? '.' : mark);
+            // Player Board
+            cout << setw(2) << r << " |";
+            for (int c = 0; c < rec.boardSize; ++c) {
+                cout << " " << rec.cpuShots[r][c];
             }
             cout << " |\n";
         }
