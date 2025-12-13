@@ -215,15 +215,19 @@ void Game::loadStats() {
     currentStats.userWins = 0;
     currentStats.shotsHit = 0;
     currentStats.shotsMissed = 0;
-    
+
     std::ifstream in("stats.dat", std::ios::binary);
     
     // If file exists
     if (in) {
-        in.read(reinterpret_cast<char*>(&currentStats), sizeof(Stats));
-    } else {
-        currentStats.totalGames = 0;
-        currentStats.userWins = 0;
+        Stats temp;
+        
+        in.read(reinterpret_cast<char*>(&temp), sizeof(Stats));
+
+        if (in) {
+            currentStats = temp; 
+        }
+
     }
 }
 
