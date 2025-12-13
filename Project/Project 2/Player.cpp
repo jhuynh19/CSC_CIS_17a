@@ -142,6 +142,8 @@ void Player::initFleet(int mode) {
 // Print Boards to Console
 void Player::printBoards() const {
     
+    int size = myBoard.getSize();
+
     // Header
     cout << "   Your Board" << string(size * 2 - 8, ' ') << "   Enemy Board\n";
     cout << "   ";
@@ -150,7 +152,6 @@ void Player::printBoards() const {
     for (int c = 0; c < size; ++c) cout << (char)('A' + c) << " ";
     cout << "   " << string(size * 2, '-') << "      " << string(size * 2, '-') << "\n";
     
-    int size = myBoard.getSize();
     for (int r = 0; r < size; ++r) {
 
         for (int r = 0; r < size; ++r) {
