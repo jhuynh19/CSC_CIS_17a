@@ -135,11 +135,6 @@ void Game::play() {
             p.markShot(target, false);
         }
         cout << "\n";
-        
-        if (sunk) {
-             cout << "Press Enter...";
-             cin.ignore(); cin.get();
-        }
 
         // Check Win
         if (c.hasLost()) {
@@ -220,15 +215,15 @@ void Game::saveStats() {
 
 void Game::displayStats() const {
     cout << "\nPlayer Statistics\n";
-    cout << left << setw(12) << "Total Games:" << currentStats.totalGames << "\n";
-    cout << left << setw(12) << "User Wins:" << currentStats.userWins << "\n";
+    cout << left << setw(20) << "Total Games:" << currentStats.totalGames << "\n";
+    cout << left << setw(20) << "User Wins:" << currentStats.userWins << "\n";
     
     if (currentStats.totalGames > 0) {
         // Calculate percentage
         int pct = (currentStats.userWins * 100) / currentStats.totalGames;
-        cout << left << setw(10) << "Win Rate:" << pct << "%\n";
+        cout << left << setw(20) << "Win Rate:" << pct << "%\n";
     } else {
-        cout << left << setw(10) << "Win Rate:" << "0%\n";
+        cout << left << setw(20) << "Win Rate:" << "0%\n";
     }
 }
 
@@ -236,6 +231,25 @@ void Game::saveGameRecord(bool playerWon) {
     GameRecord rec;
     rec.gameId = currentStats.totalGames;
     rec.playerWon = playerWon;
+
+    for(int r=0; r<10; r++) {
+        for(int c=0; c<10; c++) { 
+            rec.playerShots[r][c] = '.'; 
+            rec.cpuShots[r][c] = '.'; 
+        }
+    }
+    
+    int size = player->myBoard.getSize();
+
+    for (int r = 0; r < size; ++r) {
+        for (int c = 0; c < size; ++c) {
+            char pShot = player->enemyBoard(r, c);
+            if (pShot != 0) rec.playerShots[r][c] = pShot;
+
+            char cShot = player->incomingShots(r, c);
+            if (cShot != 0) rec.cpuShots[r][c] = cShot;
+        }
+    }
 
     // Append to binary file
     ofstream out("history.dat", ios::binary | ios::app);
@@ -258,7 +272,29 @@ void Game::displayHistory() const {
     cout << "--\t------\n";
 
     while (in.read(reinterpret_cast<char*>(&rec), sizeof(GameRecord))) {
-        cout << "#" << rec.gameId << "\t" 
-             << (rec.playerWon ? "WIN" : "LOSS") << "\n";
+        cout << "\n========================================\n";
+        cout << " Game #" << rec.gameId << " | Result: " 
+             << (rec.playerWon ? "PLAYER WON" : "COMPUTER WON") << "\n";
+        cout << "========================================\n";
+
+        cout << "   Enemy Board            Your Board\n";
+        cout << "   -----------            ----------\n";
+        
+        for (int r = 0; r < 10; ++r) {
+            
+            cout << r << " |";
+            for (int c = 0; c < 10; ++c) {
+                char mark = rec.playerShots[r][c];
+                cout << " " << (mark == 0 ? '.' : mark);
+            }
+            cout << " |   ";
+
+            cout << r << " |";
+            for (int c = 0; c < 10; ++c) {
+                char mark = rec.cpuShots[r][c];
+                cout << " " << (mark == 0 ? '.' : mark);
+            }
+            cout << " |\n";
+        }
     }
 }
