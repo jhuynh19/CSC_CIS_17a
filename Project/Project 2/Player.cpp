@@ -141,43 +141,52 @@ void Player::initFleet(int mode) {
 
 // Print Boards to Console
 void Player::printBoards() const {
-    cout << "   Your Board             Enemy Board\n";
-    cout << "   ----------             -----------\n";
+    
+    // Header
+    cout << "   Your Board" << string(size * 2 - 8, ' ') << "   Enemy Board\n";
+    cout << "   ";
+    for (int c = 0; c < size; ++c) cout << (char)('A' + c) << " ";
+    cout << "      ";
+    for (int c = 0; c < size; ++c) cout << (char)('A' + c) << " ";
+    cout << "   " << string(size * 2, '-') << "      " << string(size * 2, '-') << "\n";
     
     int size = myBoard.getSize();
     for (int r = 0; r < size; ++r) {
 
-        // Left Side is player board
-        cout << r << " |";
-        for (int c = 0; c < size; ++c) {
+        for (int r = 0; r < size; ++r) {
 
-            // Check if we have been shot here first!
-            char shot = incomingShots(r, c);
-
-            if (shot != 0) {
-                cout << " " << shot;
-            } else {
-                int id = myBoard(r, c);
-                char sym = '.';
+            // Left Side is player board
+            cout << setw(2) << r << "|"; 
+            for (int c = 0; c < size; ++c) {
                 
-                if (id > 0) {
-                    Ship &s = *fleet[id - 1];
-                    sym = s.getSymbol(); 
+                // Check if we have been shot here first!
+                char shot = incomingShots(r, c);
+                if (shot != 0) {
+                    cout << shot << " "; 
+                } else {
+                    int id = myBoard(r, c);
+                    char sym = '.';
+                    if (id > 0) {
+                        Ship &s = *fleet[id - 1];
+                        sym = s.getSymbol(); 
+                    }
+                    cout << sym << " ";
                 }
-                cout << " " << sym;
             }
-        }
-        
-        cout << " |   "; 
+            
+            cout << "   "; // Spacer
 
-        // Right Side is computer's board
-        cout << r << " |";
-        for (int c = 0; c < size; ++c) {
-            char mark = enemyBoard(r, c);
-            if (mark == 0) mark = '.';
-            cout << " " << mark;
+            // Right Side is computer's board
+            cout << setw(2) << r << "|"; 
+            for (int c = 0; c < size; ++c) {
+                char mark = enemyBoard(r, c);
+                if (mark == 0) mark = '.';
+                cout << mark << " ";
+            }
+
+            cout << "\n";
         }
-        cout << " |\n";
+
     }
 }
 
@@ -189,18 +198,20 @@ void HumanPlayer::drawPlacementView(Point cursor, bool vertical, Ship* s) const 
          << (vertical ? "Vertical" : "Horizontal") << ")\n";
     cout << "Controls: W/A/S/D move | R rotate | P place\n";
 
-    // Header
-    cout << "    ";
-    for (int col = 0; col < getBoardSize(); ++col) cout << (char)('A' + col) << " ";
-    cout << "\n    " << string(getBoardSize() * 2, '-') << "\n";
+    int size = getBoardSize(); 
 
-    int size = getBoardSize();
+    // Header
+    cout << "   ";
+    for (int c = 0; c < size; ++c) cout << (char)('A' + c) << " ";
+    cout << "\n   " << string(size * 2, '-') << "\n";
+
     for (int r = 0; r < size; ++r) {
-        cout << setw(2) << r << " |";
+        cout << setw(2) << r << "|"; 
         
         for (int c = 0; c < size; ++c) {
             bool isGhost = false;
             
+            // Check Ghost Ship
             for (int k = 0; k < s->getLength(); ++k) {
                 int ghostR = cursor.row + (vertical ? k : 0);
                 int ghostC = cursor.col + (vertical ? 0 : k);
@@ -211,9 +222,8 @@ void HumanPlayer::drawPlacementView(Point cursor, bool vertical, Ship* s) const 
                 }
             }
 
-            // Determine what to print
             char sym = '.';
-            int shipId = myBoard(r, c); 
+            int shipId = myBoard(r, c);
             
             if (isGhost) {
                 sym = 'X'; 
@@ -221,7 +231,7 @@ void HumanPlayer::drawPlacementView(Point cursor, bool vertical, Ship* s) const 
                 sym = fleet[shipId-1]->getSymbol(); 
             }
             
-            cout << " " << sym;
+            cout << sym << " ";
         }
         cout << "\n";
     }
