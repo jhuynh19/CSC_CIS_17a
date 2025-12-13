@@ -154,41 +154,38 @@ void Player::printBoards() const {
     
     for (int r = 0; r < size; ++r) {
 
-        for (int r = 0; r < size; ++r) {
-
-            // Left Side is player board
-            cout << setw(2) << r << "|"; 
-            for (int c = 0; c < size; ++c) {
-                
-                // Check if we have been shot here first!
-                char shot = incomingShots(r, c);
-                if (shot != 0) {
-                    cout << shot << " "; 
-                } else {
-                    int id = myBoard(r, c);
-                    char sym = '.';
-                    if (id > 0) {
-                        Ship &s = *fleet[id - 1];
-                        sym = s.getSymbol(); 
-                    }
-                    cout << sym << " ";
-                }
-            }
+        // Left Side is player board
+        cout << setw(2) << r << "|"; 
+        for (int c = 0; c < size; ++c) {
             
-            cout << "   "; // Spacer
-
-            // Right Side is computer's board
-            cout << setw(2) << r << "|"; 
-            for (int c = 0; c < size; ++c) {
-                char mark = enemyBoard(r, c);
-                if (mark == 0) mark = '.';
-                cout << mark << " ";
+            // Check if we have been shot here first!
+            char shot = incomingShots(r, c);
+            if (shot != 0) {
+                cout << shot << " "; 
+            } else {
+                int id = myBoard(r, c);
+                char sym = '.';
+                if (id > 0) {
+                    Ship &s = *fleet[id - 1];
+                    sym = s.getSymbol(); 
+                }
+                cout << sym << " ";
             }
+        }
+        
+        cout << "   "; // Spacer
 
-            cout << "\n";
+        // Right Side is computer's board
+        cout << setw(2) << r << "|"; 
+        for (int c = 0; c < size; ++c) {
+            char mark = enemyBoard(r, c);
+            if (mark == 0) mark = '.';
+            cout << mark << " ";
         }
 
+        cout << "\n";
     }
+
 }
 
 void HumanPlayer::drawPlacementView(Point cursor, bool vertical, Ship* s) const {
