@@ -211,6 +211,11 @@ void Game::play() {
 }
 
 void Game::loadStats() {
+    currentStats.totalGames = 0;
+    currentStats.userWins = 0;
+    currentStats.shotsHit = 0;
+    currentStats.shotsMissed = 0;
+    
     std::ifstream in("stats.dat", std::ios::binary);
     
     // If file exists
