@@ -105,7 +105,11 @@ void Game::play() {
     Player &p = *player;
     Player &c = *computer;
 
-    p.placeShips();
+    if (!p.placeShips()) {
+        cout << "\nGame setup cancelled. Returning to menu.\n";
+        return;
+    }
+    
     c.placeShips(); 
 
     cout << "\nAll ships placed! Battle commencing...\n";

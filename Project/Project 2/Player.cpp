@@ -196,7 +196,7 @@ void HumanPlayer::drawPlacementView(Point cursor, bool vertical, Ship* s) const 
     
     cout << "Place: " << s->getName() << " (Size " << s->getLength() << ", " 
          << (vertical ? "Vertical" : "Horizontal") << ")\n";
-    cout << "Controls: W/A/S/D move | R rotate | P place\n";
+    cout << "Controls: W/A/S/D move | C rotate | P place | Q quit\n";
 
     int size = getBoardSize(); 
 
@@ -262,7 +262,7 @@ bool HumanPlayer::placeShips() {
                 case 'S': if (cursor.row < size - 1) cursor.row++; break;
                 case 'A': if (cursor.col > 0) cursor.col--; break;
                 case 'D': if (cursor.col < size - 1) cursor.col++; break;
-                case 'R': vertical = !vertical; break;
+                case 'C': vertical = !vertical; break;
                 case 'Q': 
                     return true;
                 case 'P': 
