@@ -10,6 +10,7 @@
 #include <iomanip>
 #include <ctime>
 #include <cstdlib>
+#include <cstring>
 #include <limits>
 #include <string>
 
@@ -149,14 +150,22 @@ void Player::printBoards() const {
         // Left Side is player board
         cout << r << " |";
         for (int c = 0; c < size; ++c) {
-            int id = myBoard(r, c);
-            char sym = '.';
-            
-            if (id > 0) {
-                Ship &s = *fleet[id - 1];
-                sym = s.getSymbol(); 
+
+            // Check if we have been shot here first!
+            char shot = incomingShots(r, c);
+
+            if (shot != 0) {
+                cout << " " << shot;
+            } else {
+                int id = myBoard(r, c);
+                char sym = '.';
+                
+                if (id > 0) {
+                    Ship &s = *fleet[id - 1];
+                    sym = s.getSymbol(); 
+                }
+                cout << " " << sym;
             }
-            cout << " " << sym;
         }
         
         cout << " |   "; 
@@ -286,6 +295,7 @@ Point HumanPlayer::makeMove() {
                         return Point(r, c);
                     } else {
                         cout << "Already shot there.\n";
+                        continue;
                     }
                 }
             }
