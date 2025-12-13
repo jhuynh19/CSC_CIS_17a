@@ -145,12 +145,14 @@ void Player::printBoards() const {
     int size = myBoard.getSize();
 
     // Header
-    cout << "   Your Board" << string(size * 2 - 8, ' ') << "   Enemy Board\n";
-    cout << "   ";
+    cout << string(3, ' ') << "Your Board" << string(size * 2 - 8, ' ') << string(3, ' ') << "Enemy Board\n";
+    cout << string(3, ' ');
     for (int c = 0; c < size; ++c) cout << (char)('A' + c) << " ";
-    cout << "      ";
+    cout << string(6, ' ');
     for (int c = 0; c < size; ++c) cout << (char)('A' + c) << " ";
-    cout << "   " << string(size * 2, '-') << "      " << string(size * 2, '-') << "\n";
+    cout << "\n";
+    cout << string(3, ' ') << string(size * 2, '-') << string(6, ' ') << string(size * 2, '-') << "\n";
+    
     
     for (int r = 0; r < size; ++r) {
 
