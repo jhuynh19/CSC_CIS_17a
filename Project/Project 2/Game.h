@@ -35,9 +35,7 @@ class Game {
         ~Game();
 
         void setup();
-
         void play();
-
         void displayStats() const;
         
         static int getGamesPlayed() { return gamesPlayed; }
