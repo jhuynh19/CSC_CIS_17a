@@ -124,6 +124,14 @@ void Game::play() {
 
         // Get Valid Move from Player
         Point target = p.makeMove();
+
+        // Handle game quit
+        if (target.isQuit()) {
+            cout << "\nYou forfeited the match!\n";
+            gameOver = true;
+            playerWon = false;
+            break; 
+        }
         
         // Fire at Computer
         if (c.receiveShot(target, hit, sunk)) {

@@ -20,23 +20,27 @@ class Point {
         int row;
         int col;
 
+        // Helpers
+        static Point Quit() { return Point(-1, -1); }
+        bool isQuit() const { return row == -1 && col == -1; }
+
         // Parameterized Constructor
         Point(int r = 0, int c = 0) : row(r), col(c) {}
     
         // Operators
-        Point operator+(const Point& right) const {                             // Adds two points together
+        Point operator+(const Point& right) const {                            
             return Point(row + right.row, col + right.col);
         }
 
         bool operator==(const Point& right) const {
-            return (row == right.row && col == right.col);                      // Checks if two points share the exact same coordinates
+            return (row == right.row && col == right.col);                      
         }
 
-        bool operator!=(const Point& right) const {                             // Returns true if the points are different            
+        bool operator!=(const Point& right) const {                                         
             return !(*this == right);
         }
 
-        friend std::ostream& operator<<(std::ostream& out, const Point& p) {    // Print Point object
+        friend std::ostream& operator<<(std::ostream& out, const Point& p) {    
             out << (char)('A' + p.col) << p.row;
             return out;
         }

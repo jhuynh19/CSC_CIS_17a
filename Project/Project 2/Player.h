@@ -15,6 +15,9 @@
 #include <string>
 
 class Player {
+
+    friend class Game;
+
     protected:
 
         std::string name;           
@@ -35,7 +38,7 @@ class Player {
         Player(std::string n);                                  
 
         virtual ~Player();                                      
-        virtual void placeShips() = 0;                         
+        virtual bool placeShips() = 0;                         
         virtual Point makeMove() = 0;                          
 
         // Mutators
@@ -70,7 +73,7 @@ class HumanPlayer : public Player {
         HumanPlayer(std::string n) : Player(n) {}
         virtual ~HumanPlayer() {}
 
-        void placeShips() override;   
+        bool placeShips() override;
         Point makeMove() override;    
 };
 
@@ -84,7 +87,7 @@ class ComputerPlayer : public Player {
         ComputerPlayer();
         virtual ~ComputerPlayer() {}
 
-        void placeShips() override;
+        bool placeShips() override;
         Point makeMove() override;
         
         void addAdjacentTargets(Point p);
