@@ -12,9 +12,7 @@ using namespace std;
 int main() {
     Game battleship;
 
-    battleship.setup();
-    battleship.play();
-    battleship.displayStats();
+    battleship.run();
 
     return 0;
 }

@@ -27,6 +27,44 @@ Game::~Game() {
     delete computer;
 }
 
+void Game::run() {
+    int choice = 0;
+    
+    do {
+        cout << "\nBattleship\n";
+        cout << "1. Play Battleship\n";
+        cout << "2. View Statistics\n";
+        cout << "3. View Game History\n";
+        cout << "4. Quit\n";
+        cout << "Select an option: ";
+        cin >> choice;
+
+        // Input Validation
+        if (cin.fail()) {
+            cin.clear(); cin.ignore(10000, '\n');
+            choice = 0;
+        }
+
+        switch (choice) {
+            case 1:
+                setup(); 
+                play();  
+                break;
+            case 2:
+                displayStats();
+                break;
+            case 3:
+                displayHistory();
+                break;
+            case 4:
+                cout << "Thanks for playing!\n";
+                break;
+            default:
+                cout << "Invalid choice. Please try again.\n";
+        }
+    } while (choice != 4);
+}
+
 void Game::setup() {
 
     // Select Mode 
@@ -156,6 +194,7 @@ void Game::play() {
     }
 
     saveStats();
+    saveGameRecord(playerWon);
 
     gamesPlayed++;
 }
@@ -190,5 +229,36 @@ void Game::displayStats() const {
         cout << left << setw(10) << "Win Rate:" << pct << "%\n";
     } else {
         cout << left << setw(10) << "Win Rate:" << "0%\n";
+    }
+}
+
+void Game::saveGameRecord(bool playerWon) {
+    GameRecord rec;
+    rec.gameId = currentStats.totalGames;
+    rec.playerWon = playerWon;
+
+    // Append to binary file
+    ofstream out("history.dat", ios::binary | ios::app);
+    if (out) {
+        out.write(reinterpret_cast<const char*>(&rec), sizeof(GameRecord));
+    }
+}
+
+void Game::displayHistory() const {
+    ifstream in("history.dat", ios::binary);
+    
+    if (!in) {
+        cout << "\nNo game history found.\n";
+        return;
+    }
+
+    GameRecord rec;
+    cout << "\nGame History\n";
+    cout << "ID\tResult\n";
+    cout << "--\t------\n";
+
+    while (in.read(reinterpret_cast<char*>(&rec), sizeof(GameRecord))) {
+        cout << "#" << rec.gameId << "\t" 
+             << (rec.playerWon ? "WIN" : "LOSS") << "\n";
     }
 }

@@ -27,16 +27,24 @@ class Game {
 
         Stats currentStats;
 
+        struct GameRecord {
+            unsigned int gameId;
+            bool playerWon;
+        };
+
         void loadStats();
         void saveStats();
+        void saveGameRecord(bool playerWon);
 
     public:
         Game();
         ~Game();
 
+        void run();
         void setup();
         void play();
         void displayStats() const;
+        void displayHistory() const;
         
         static int getGamesPlayed() { return gamesPlayed; }
 };
