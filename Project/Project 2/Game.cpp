@@ -14,19 +14,27 @@ using namespace std;
 // Initialize Static Member
 int Game::gamesPlayed = 0;
 
+
+/**
+ * @brief Constructor. Initializes pointers and loads persistent stats.
+ */
 Game::Game() {
     player = NULL;
     computer = NULL;
-
     loadStats();
 }
 
-// Clean up memory when game ends
+/**
+ * @brief Destructor. Frees allocated memory for players.
+ */
 Game::~Game() {
     delete player;
     delete computer;
 }
 
+/**
+ * @brief Main application loop. Handles menu navigation.
+ */
 void Game::run() {
     int choice = 0;
     
@@ -65,6 +73,10 @@ void Game::run() {
     } while (choice != 4);
 }
 
+/**
+ * @brief Configures game mode and initializes players.
+ * Handles selection between Standard (10x10) and Rapid (5x5) modes.
+ */
 void Game::setup() {
 
     // Select Mode 
@@ -101,6 +113,9 @@ void Game::setup() {
     c.initFleet(choice);
 }
 
+/**
+ * @brief Core gameplay loop. Manages turns, shots, and win conditions.
+ */
 void Game::play() {
     Player &p = *player;
     Player &c = *computer;
@@ -122,8 +137,8 @@ void Game::play() {
     string sunkName = "";
 
     while (!gameOver) {
-        // Player Turn
 
+        // Player Turn
         cout << string(50, '\n'); 
         p.printBoards();       
 
@@ -161,15 +176,15 @@ void Game::play() {
         }
 
         // Computer's Turn
-        
         Point cpuTarget = c.makeMove(p.getShipsRemaining());
         
         // Fire at Player
         if (p.receiveShot(cpuTarget, hit, sunk, sunkName)) {
             cout << "Computer fires " << cpuTarget << " -> HIT!\n";
             if (sunk) cout << "Your ship was sunk!\n";
+            
+            // Update computer target range
             c.markShot(cpuTarget, true);
-
             ComputerPlayer* cpuPtr = dynamic_cast<ComputerPlayer*>(computer);
             
             if (cpuPtr) {
@@ -206,10 +221,13 @@ void Game::play() {
 
     saveStats();
     saveGameRecord(playerWon);
-
     gamesPlayed++;
 }
 
+/**
+ * @brief Loads stats from binary file safely.
+ * Resets to 0 if file is missing or corrupt.
+ */
 void Game::loadStats() {
     currentStats.totalGames = 0;
     currentStats.userWins = 0;
@@ -231,6 +249,9 @@ void Game::loadStats() {
     }
 }
 
+/**
+ * @brief Saves current stats to binary file.
+ */
 void Game::saveStats() {
     std::ofstream out("stats.dat", std::ios::binary);
     if (out) {
@@ -238,6 +259,9 @@ void Game::saveStats() {
     }
 }
 
+/**
+ * @brief Prints player statistics and calculated accuracy to console.
+ */
 void Game::displayStats() const {
     cout << "\nPlayer Statistics\n";
     cout << left << setw(20) << "Total Games:" << currentStats.totalGames << "\n";
@@ -254,7 +278,7 @@ void Game::displayStats() const {
         int totalShots = currentStats.shotsHit + currentStats.shotsMissed;
 
         if (totalShots > 0) {
-            // Calculate percentage
+            // Calculate accuracy
             int acc = (currentStats.shotsHit * 100) / totalShots;
             cout << left << setw(20) << "Accuracy:" << acc << "%\n";
         } else {
@@ -267,6 +291,10 @@ void Game::displayStats() const {
 
 }
 
+/**
+ * @brief Appends the result of the last game to the history file.
+ * Handles dynamic board sizing for correct storage.
+ */
 void Game::saveGameRecord(bool playerWon) {
     GameRecord rec;
     rec.gameId = currentStats.totalGames;
@@ -299,6 +327,10 @@ void Game::saveGameRecord(bool playerWon) {
     }
 }
 
+/**
+ * @brief Reads and displays past game records from binary file.
+ * Formats output based on the board size of each record.
+ */
 void Game::displayHistory() const {
     ifstream in("history.dat", ios::binary);
     
