@@ -1,7 +1,7 @@
 /* 
  * File:   Player.cpp
  * Author: John Huynh
- * Purpose: Player logic
+ * Purpose: Human player and computer logic
  */
 
 // Libraries
@@ -16,12 +16,17 @@
 
 using namespace std;
 
-// Constructor
+/**
+ * @brief Constructor. Initializes player name and ship count.
+ * @param n Name of the player.
+ */
 Player::Player(string n) : name(n) {
     shipsRemaining = 0;
 }
 
-// Destructor
+/**
+ * @brief Destructor. Cleans up dynamically allocated ships.
+ */
 Player::~Player() {
     for (int i = 0; i < fleet.size(); i++) {
         delete fleet[i];
@@ -29,7 +34,14 @@ Player::~Player() {
     fleet.clear();
 }
 
-// Check if ship fits boundaries of board
+/**
+ * @brief Checks if a ship can be placed at a specific location.
+ * Verifies boundaries and overlap with existing ships.
+ * @param p Starting coordinate.
+ * @param vertical Orientation flag.
+ * @param length Size of the ship.
+ * @return true if valid, false otherwise.
+ */
 bool Player::canPlace(Point p, bool vertical, int length) const {
     int size = myBoard.getSize();
 
@@ -43,7 +55,13 @@ bool Player::canPlace(Point p, bool vertical, int length) const {
     return true;
 }
 
-// Place ship on board
+/**
+ * @brief Writes the ship's ID to the board grid.
+ * @param p Starting coordinate.
+ * @param vertical Orientation flag.
+ * @param length Size of the ship.
+ * @param shipId Unique ID of the ship.
+ */
 void Player::applyShipToBoard(Point p, bool vertical, int length, int shipId) {
     for (int k = 0; k < length; ++k) {
         int r = p.row + (vertical ? k : 0);
@@ -52,7 +70,10 @@ void Player::applyShipToBoard(Point p, bool vertical, int length, int shipId) {
     }
 }
 
-// Placing ships randomly, meant for auto computer placement
+/**
+ * @brief Places all ships in the fleet randomly.
+ * Used by ComputerPlayer and potentially for auto-setup.
+ */
 void Player::placeShipsRandomly() {
     int id = 1; 
     int size = myBoard.getSize();
@@ -75,23 +96,32 @@ void Player::placeShipsRandomly() {
     }
 }
 
-// Shot logic
+/**
+ * @brief Processes a shot fired at this player.
+ * Updates the board, ship health, and win condition.
+ * @param p Coordinate of the shot.
+ * @param wasHit [out] True if a ship was hit.
+ * @param sunk [out] True if a ship sank.
+ * @param sunkName [out] Name of the sunk ship.
+ * @return true if shot was valid, false if invalid.
+ */
 bool Player::receiveShot(Point p, bool &wasHit, bool &sunk, string &sunkName) {
     wasHit = false; 
     sunk = false;
     sunkName = "";
 
-    // Check bounds
+    // Check Bounds
     if (p.row < 0 || p.row >= myBoard.getSize() || p.col < 0 || p.col >= myBoard.getSize()) {
         return false;
     }
 
-    // Check ship ID
+    // Check Ship ID
     int shipId = myBoard(p.row, p.col);
     
     if (shipId > 0) {
         wasHit = true;
         
+        // Mark Hit
         incomingShots(p.row, p.col) = 'X';
         Ship &s = *fleet[shipId - 1];
         
@@ -105,18 +135,26 @@ bool Player::receiveShot(Point p, bool &wasHit, bool &sunk, string &sunkName) {
         return true;
     }
     
+    // Mark Miss
     incomingShots(p.row, p.col) = 'O'; 
     
     return false;
 }
 
-// Check win condition
+/**
+ * @brief Checks if the player has lost (0 ships remaining).
+ * @return true if lost.
+ */
 bool Player::hasLost() const {
     return shipsRemaining == 0;
 }
 
-// Initialize Fleet
+/**
+ * @brief Initializes the fleet based on game mode.
+ * @param mode 1 = Standard (5 ships), 2 = Rapid (3 ships).
+ */
 void Player::initFleet(int mode) {
+
     // Clear out any ships
     for (int i = 0; i < fleet.size(); i++) {
         delete fleet[i];
@@ -142,7 +180,9 @@ void Player::initFleet(int mode) {
     shipsRemaining = fleet.size();
 }
 
-// Print Boards to Console
+/**
+ * @brief Displays both Player and Enemy boards side-by-side.
+ */
 void Player::printBoards() const {
     
     int size = myBoard.getSize();
@@ -159,7 +199,7 @@ void Player::printBoards() const {
     
     for (int r = 0; r < size; ++r) {
 
-        // Left Side is player board
+        // Left Side: Player Board (Shows ships + incoming shots)
         cout << setw(2) << r << "|"; 
         for (int c = 0; c < size; ++c) {
             
@@ -180,7 +220,7 @@ void Player::printBoards() const {
         
         cout << "   "; // Spacer
 
-        // Right Side is computer's board
+        // Right Side: Enemy Board (Shows my shots)
         cout << setw(2) << r << "|"; 
         for (int c = 0; c < size; ++c) {
             char mark = enemyBoard(r, c);
@@ -193,7 +233,11 @@ void Player::printBoards() const {
 
 }
 
+/**
+ * @brief Helper to draw the placement interface with "ghost" ship.
+ */
 void HumanPlayer::drawPlacementView(Point cursor, bool vertical, Ship* s) const {
+
     // Clear screen
     cout << string(50, '\n');
     
@@ -213,7 +257,7 @@ void HumanPlayer::drawPlacementView(Point cursor, bool vertical, Ship* s) const 
         for (int c = 0; c < size; ++c) {
             bool isGhost = false;
             
-            // Check Ghost Ship
+            // Render Ghost Ship at cursor
             for (int k = 0; k < s->getLength(); ++k) {
                 int ghostR = cursor.row + (vertical ? k : 0);
                 int ghostC = cursor.col + (vertical ? 0 : k);
@@ -239,6 +283,10 @@ void HumanPlayer::drawPlacementView(Point cursor, bool vertical, Ship* s) const 
     }
 }
 
+/**
+ * @brief Interactive loop for user to place ships.
+ * @return true if successful, false if user quits.
+ */
 bool HumanPlayer::placeShips() {
     Point cursor(0, 0);
     bool vertical = false;
@@ -285,6 +333,11 @@ bool HumanPlayer::placeShips() {
     return true;
 }
 
+/**
+ * @brief Prompts user for a target.
+ * @param enemyShips Count of enemy ships for display.
+ * @return Target point or Quit signal.
+ */
 Point HumanPlayer::makeMove(int enemyShips) {
     string input;
     int r, c, rowNum;
@@ -325,15 +378,25 @@ Point HumanPlayer::makeMove(int enemyShips) {
     }
 }
 
+/**
+ * @brief Constructor. Starts in Hunt mode.
+ */
 ComputerPlayer::ComputerPlayer() : Player("Computer") {
     huntMode = true;
 }
 
+/**
+ * @brief Places ships randomly.
+ * @return Always true.
+ */
 bool ComputerPlayer::placeShips() {
     placeShipsRandomly();
     return true;
 }
 
+/**
+ * @brief Adds adjacent cells to the target stack after a hit.
+ */
 void ComputerPlayer::addAdjacentTargets(Point p) {
     potentialTargets.push_back(Point(p.row - 1, p.col));
     potentialTargets.push_back(Point(p.row + 1, p.col));
@@ -341,6 +404,9 @@ void ComputerPlayer::addAdjacentTargets(Point p) {
     potentialTargets.push_back(Point(p.row, p.col + 1));
 }
 
+/**
+ * @brief AI Logic: Switches between random Hunting and smart Targeting.
+ */
 Point ComputerPlayer::makeMove(int enemyShips) {
     Point target;
     bool valid = false;
